@@ -1,0 +1,8 @@
+agent:
+  plugin:
+    enabledPlugins:
+      - rabbit.open.athena.plugin.poc.def.MemberMethodPluginDefinition
+
+
+
+

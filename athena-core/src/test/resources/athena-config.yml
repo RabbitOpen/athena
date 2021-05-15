@@ -1,0 +1,9 @@
+agent:
+  plugin:
+    enabledPlugins:
+      - com.org.Plugin1
+      - org.test.Plugin2
+
+
+
+

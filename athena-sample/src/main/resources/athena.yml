@@ -1,0 +1,6 @@
+
+agent:
+  plugin:
+    enabledPlugins:
+      - rabbit.open.athena.plugin.poc.SimplePluginDefinition
+
