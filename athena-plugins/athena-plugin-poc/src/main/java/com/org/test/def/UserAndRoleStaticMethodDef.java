@@ -9,22 +9,28 @@ import rabbit.open.athena.plugin.common.ClassEnhancer;
 import static net.bytebuddy.matcher.ElementMatchers.named;
 
 /**
- * 简单成员方法插件
+ * 静态方法插件
  */
-public class MemberMethodPluginDefinition implements SimplePluginDefinition {
+public class UserAndRoleStaticMethodDef implements SimplePluginDefinition {
 
     @Override
     public ElementMatcher.Junction<TypeDescription> classMatcher() {
-        return named("com.org.test.bean.User").or(named("com.org.test.bean.Role"));
-    }
-
-    @Override
-    public ElementMatcher.Junction methodMatcher() {
-        return named("getName");
+        return named("com.org.test.bean.User")
+                .or(named("com.org.test.bean.Role"));
     }
 
     @Override
     public Class<? extends ClassEnhancer> enhancerClass() {
         return SimpleClassEnhancer.class;
+    }
+
+    @Override
+    public ElementMatcher.Junction methodMatcher() {
+        return named("type");
+    }
+
+    @Override
+    public boolean isStaticMethod() {
+        return true;
     }
 }

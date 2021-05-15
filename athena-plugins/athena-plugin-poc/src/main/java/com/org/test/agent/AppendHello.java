@@ -5,7 +5,7 @@ import rabbit.open.athena.plugin.common.context.EnhancedObject;
 
 import java.lang.reflect.Method;
 
-public class SimpleClassEnhancer implements ClassEnhancer {
+public class AppendHello implements ClassEnhancer {
 
     @Override
     public void beforeMethod(EnhancedObject enhancedObj, Method targetMethod, Object[] args) {
@@ -14,7 +14,7 @@ public class SimpleClassEnhancer implements ClassEnhancer {
 
     @Override
     public Object afterMethod(EnhancedObject enhancedObj, Method targetMethod, Object[] args, Object result) {
-        return null;
+        return result + "-hello";
     }
 
     @Override

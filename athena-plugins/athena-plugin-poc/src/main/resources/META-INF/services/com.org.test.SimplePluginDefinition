@@ -1,2 +1,5 @@
-com.org.test.def.MemberMethodPluginDefinition
-com.org.test.def.StaticMethodPluginDefinition
+com.org.test.def.UserAndRoleMemberMethodDef
+com.org.test.def.UserAndRoleStaticMethodDef
+com.org.test.def.User1MemberMethodDef
+com.org.test.def.User1MemberMethodDef2
+com.org.test.def.User1StaticMethodDef

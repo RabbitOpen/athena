@@ -33,7 +33,9 @@ public class DefaultTransformer implements AgentBuilder.Transformer {
         if (plugin.isStaticMethod()) {
             // 增强静态方法
             return builder.method(ElementMatchers.isStatic().and(plugin.methodMatcher()))
-                    .intercept(MethodDelegation.to(new StaticMethodInterceptor(plugin)));
+                    .intercept(MethodDelegation.withDefaultConfiguration()
+                            .withBinders(Morph.Binder.install(MorphCallBack.class))
+                            .to(new StaticMethodInterceptor(plugin)));
         } else {
             // 增强成员方法
             return builder.method(plugin.methodMatcher())

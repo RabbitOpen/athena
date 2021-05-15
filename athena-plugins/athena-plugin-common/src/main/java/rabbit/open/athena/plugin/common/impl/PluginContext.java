@@ -124,6 +124,10 @@ public class PluginContext implements PluginService {
         return metaData;
     }
 
+    /**
+     * 获取有效的插件配置，如果配置文件中没有有效的插件，那么就使用默认插件（已申明的全部插件）
+     * @return
+     */
     @Override
     public List<AthenaPluginDefinition> getEnabledPlugins() {
         List<Class<? extends AthenaPluginDefinition>> enabledPlugins = getMetaData().getEnabledPlugins();

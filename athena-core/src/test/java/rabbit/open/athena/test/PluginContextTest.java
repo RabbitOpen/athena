@@ -1,6 +1,7 @@
 package rabbit.open.athena.test;
 
 import com.org.test.bean.User;
+import com.org.test.bean.User1;
 import junit.framework.TestCase;
 import net.bytebuddy.agent.ByteBuddyAgent;
 import net.bytebuddy.description.type.TypeDescription;
@@ -21,7 +22,7 @@ public class PluginContextTest {
     public void pluginContextTest() {
         PluginContext context = PluginContext.initPluginContext("athena-config.yml");
         List<AthenaPluginDefinition> enabledPlugins = context.getEnabledPlugins();
-        TestCase.assertEquals(2, enabledPlugins.size());
+        TestCase.assertEquals(5, enabledPlugins.size());
 
         context = PluginContext.initPluginContext("athena-config-1.yml");
         TestCase.assertEquals(1, context.getMetaData().getEnabledPlugins().size());
@@ -40,5 +41,11 @@ public class PluginContextTest {
         TestCase.assertEquals("User", User.type());
     }
 
+    @Test
+    public void enhanceTest() {
+        AthenaAgent.premain("athena-config-2.yml", ByteBuddyAgent.install());
+        TestCase.assertEquals("lili-hello-world", new User1().getName());
+        TestCase.assertEquals("User1-static", User1.type());
+    }
 
 }

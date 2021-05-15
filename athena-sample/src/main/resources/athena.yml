@@ -2,7 +2,7 @@
 agent:
   plugin:
     enabledPlugins:
-      - com.org.test.def.MemberMethodPluginDefinition
+      - com.org.test.def.UserAndRoleMemberMethodDef
     enabledPluginDefinitions:
       - com.org.test.SimplePluginDefinition
 
