@@ -52,7 +52,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <finalName>${project.artifactId}-${project.version}</finalName>
+                            <finalName>athenaAgent-${project.version}</finalName>
                             <artifactSet>
                                 <includes>
                                     <!-- 设置需要一起package的包 -->
