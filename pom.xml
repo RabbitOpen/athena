@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>rabbit.open.athena</groupId>
+    <artifactId>athena</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0</version>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <athena.project.version>1.0.0</athena.project.version>
+    </properties>
+
+    <modules>
+        <module>athena-sample</module>
+        <module>athena-core</module>
+        <module>athena-plugins</module>
+    </modules>
+
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>rabbit.open.athena</groupId>
+                <artifactId>athena-plugin-common</artifactId>
+                <version>${athena.project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>rabbit.open.athena</groupId>
+                <artifactId>athena-plugin-poc</artifactId>
+                <version>${athena.project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.2.3</version>
+            </dependency>
+            <dependency>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy</artifactId>
+                <version>1.11.0</version>
+            </dependency>
+            <dependency>
+                <groupId>net.bytebuddy</groupId>
+                <artifactId>byte-buddy-agent</artifactId>
+                <version>1.11.0</version>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>morse.loan</groupId>
+                <artifactId>morse-agent-handler-h1</artifactId>
+                <version>1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>morse.loan</groupId>
+                <artifactId>morse-agent-handler-h2</artifactId>
+                <version>1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>morse.loan</groupId>
+                <artifactId>morse-agent-common</artifactId>
+                <version>1.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+                <version>1.10</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>
