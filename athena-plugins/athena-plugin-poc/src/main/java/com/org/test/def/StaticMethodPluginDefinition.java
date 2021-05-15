@@ -1,10 +1,10 @@
-package rabbit.open.athena.plugin.poc.def;
+package com.org.test.def;
 
+import com.org.test.SimplePluginDefinition;
+import com.org.test.agent.SimpleClassEnhancer;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 import rabbit.open.athena.plugin.common.ClassEnhancer;
-import rabbit.open.athena.plugin.poc.SimplePluginDefinition;
-import rabbit.open.athena.plugin.poc.agent.SimpleClassEnhancer;
 
 import static net.bytebuddy.matcher.ElementMatchers.named;
 
@@ -14,14 +14,19 @@ import static net.bytebuddy.matcher.ElementMatchers.named;
 public class StaticMethodPluginDefinition implements SimplePluginDefinition {
 
     @Override
-    public ElementMatcher.Junction<TypeDescription> generateClassMatcher() {
+    public ElementMatcher.Junction<TypeDescription> classMatcher() {
         return named("com.org.test.bean.User")
                 .or(named("com.org.test.bean.Role"));
     }
 
     @Override
-    public Class<? extends ClassEnhancer> getEnhancerClass() {
+    public Class<? extends ClassEnhancer> enhancerClass() {
         return SimpleClassEnhancer.class;
+    }
+
+    @Override
+    public ElementMatcher.Junction methodMatcher() {
+        return named("type");
     }
 
     @Override

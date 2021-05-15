@@ -1,12 +1,16 @@
 package rabbit.open.athena.test;
 
+import com.org.test.bean.User;
 import junit.framework.TestCase;
+import net.bytebuddy.agent.ByteBuddyAgent;
+import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.pool.TypePool;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import rabbit.open.athena.core.AthenaAgent;
 import rabbit.open.athena.plugin.common.AthenaPluginDefinition;
 import rabbit.open.athena.plugin.common.impl.PluginContext;
-import rabbit.open.athena.plugin.poc.SimplePluginDefinition;
 
 import java.util.List;
 
@@ -14,19 +18,27 @@ import java.util.List;
 public class PluginContextTest {
 
     @Test
-    public void loadTest() {
+    public void pluginContextTest() {
         PluginContext context = PluginContext.initPluginContext("athena-config.yml");
-        context.loadPlugins(new Class[] {
-                SimplePluginDefinition.class
-        });
         List<AthenaPluginDefinition> enabledPlugins = context.getEnabledPlugins();
         TestCase.assertEquals(2, enabledPlugins.size());
 
         context = PluginContext.initPluginContext("athena-config-1.yml");
-        context.loadPlugins(new Class[] {
-                SimplePluginDefinition.class
-        });
-        enabledPlugins = context.getEnabledPlugins();
-        TestCase.assertEquals(1, enabledPlugins.size());
+        TestCase.assertEquals(1, context.getMetaData().getEnabledPlugins().size());
+
+        TestCase.assertEquals(1, context.getEnabledPlugins().size());
+
+        // 和"com.org.test.bean.User"匹配的插件有两个
+        TypeDescription typeDescription = TypePool.Default.ofSystemLoader()
+                .describe("com.org.test.bean.User").resolve();
+        List<AthenaPluginDefinition> plugins = context.getMatchedPlugins(typeDescription);
+        TestCase.assertEquals(2, plugins.size());
+
+        // 只增强了的成员方法
+        AthenaAgent.premain("athena-config-1.yml", ByteBuddyAgent.install());
+        TestCase.assertNull(new User().getName());
+        TestCase.assertEquals("User", User.type());
     }
+
+
 }

@@ -1,4 +1,4 @@
-package rabbit.open.athena.plugin.poc;
+package com.org.test;
 
 import rabbit.open.athena.plugin.common.AthenaPluginDefinition;
 

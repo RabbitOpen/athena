@@ -1,7 +1,11 @@
 agent:
   plugin:
+    #只允许以下插件有效，如果不指定，则全部有效
     enabledPlugins:
-      - rabbit.open.athena.plugin.poc.def.MemberMethodPluginDefinition
+      - com.org.test.def.MemberMethodPluginDefinition
+    #只允许以下插件定义有效， 如果不指定，则全部有效
+    enabledPluginDefinitions:
+      - com.org.test.SimplePluginDefinition
 
 
 

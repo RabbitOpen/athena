@@ -2,5 +2,7 @@
 agent:
   plugin:
     enabledPlugins:
-      - rabbit.open.athena.plugin.poc.SimplePluginDefinition
+      - com.org.test.def.MemberMethodPluginDefinition
+    enabledPluginDefinitions:
+      - com.org.test.SimplePluginDefinition
 

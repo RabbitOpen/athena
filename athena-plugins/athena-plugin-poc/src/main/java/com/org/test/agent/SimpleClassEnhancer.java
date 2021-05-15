@@ -1,4 +1,4 @@
-package rabbit.open.athena.plugin.poc.agent;
+package com.org.test.agent;
 
 import rabbit.open.athena.plugin.common.ClassEnhancer;
 

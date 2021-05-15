@@ -19,8 +19,13 @@ public class AthenaMetaData {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
+    // 外部允许有效的插件（配置）
     @Property("agent.plugin.enabledPlugins")
     private List<String> enabledPlugins = new ArrayList<>();
+
+    // 外部允许有效的插件定义（配置）
+    @Property("agent.plugin.enabledPluginDefinitions")
+    private List<String> enabledPluginDefinitions = new ArrayList<>();
 
     /**
      * 获取申明的有效插件
@@ -32,11 +37,33 @@ public class AthenaMetaData {
             try {
                 plugins.add((Class<? extends AthenaPluginDefinition>) Class.forName(definition));
             } catch (ClassNotFoundException e) {
-                logger.error("plugin[{}] is not existed!", definition);
+                logger.error("plugin class[{}] is not found!", definition);
                 continue;
             }
         }
         return plugins;
+    }
+
+    /**
+     * 获取外部声明的插件定义
+     * @return
+     */
+    public List<Class<? extends AthenaPluginDefinition>> getEnabledPluginDefinitions() {
+        List<Class<? extends AthenaPluginDefinition>> definitions = new ArrayList<>();
+        for (String definition : enabledPluginDefinitions) {
+            try {
+                Class<?> clz = Class.forName(definition);
+                if (AthenaPluginDefinition.class.isAssignableFrom(clz)) {
+                    definitions.add((Class<? extends AthenaPluginDefinition>) clz);
+                } else {
+                    logger.error("[{}] is not a valid plugin definition class!", definition);
+                }
+            } catch (ClassNotFoundException e) {
+                logger.error("plugin[{}] is not existed!", definition);
+                continue;
+            }
+        }
+        return definitions;
     }
 
     /**
@@ -46,9 +73,9 @@ public class AthenaMetaData {
      */
     public static AthenaMetaData readBy(String yml) {
         Yaml yaml = new Yaml();
-        Iterable<Object> all = yaml.loadAll(AthenaMetaData.class.getResourceAsStream(yml));
+        Iterable<Object> all = yaml.loadAll(AthenaMetaData.class.getResourceAsStream("/" + yml));
         if (!all.iterator().hasNext()) {
-            return null;
+            return new AthenaMetaData();
         }
         return convert((Map<String, Object>) all.iterator().next());
     }

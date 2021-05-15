@@ -13,12 +13,12 @@ public interface AthenaPluginDefinition {
     /**
      * 定义哪些class可以被增强
      */
-    ElementMatcher.Junction<TypeDescription> generateClassMatcher();
+    ElementMatcher.Junction<TypeDescription> classMatcher();
 
     /**
      * 声明哪些方法可以被增强
      */
-    default ElementMatcher.Junction<TypeDescription> generateMethodMatcher() {
+    default ElementMatcher.Junction methodMatcher() {
         return isPublic().and(not(named("toString")))
                 .and(not(named("hashCode")));
     }
@@ -26,7 +26,7 @@ public interface AthenaPluginDefinition {
     /**
      * 用来增强的class对象
      */
-    Class<? extends ClassEnhancer> getEnhancerClass();
+    Class<? extends ClassEnhancer> enhancerClass();
 
     /**
      * 标识被增强的方法是不是静态方法

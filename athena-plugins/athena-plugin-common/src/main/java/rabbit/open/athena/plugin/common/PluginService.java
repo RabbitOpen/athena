@@ -14,7 +14,7 @@ public interface PluginService {
      * @param type
      * @return
      */
-    List<AthenaPluginDefinition> getPlugins(TypeDescription type);
+    List<AthenaPluginDefinition> getMatchedPlugins(TypeDescription type);
 
     /**
      * 获取有效的插件配置
@@ -26,6 +26,6 @@ public interface PluginService {
      * 加载指定的插件
      * @param definitions
      */
-    void loadPlugins(Class<? extends AthenaPluginDefinition>[] definitions);
+    void loadPlugins(List<Class<? extends AthenaPluginDefinition>> definitions);
 
 }
