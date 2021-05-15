@@ -5,6 +5,7 @@ import com.org.test.bean.User1;
 import junit.framework.TestCase;
 import net.bytebuddy.agent.ByteBuddyAgent;
 import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.matcher.ElementMatchers;
 import net.bytebuddy.pool.TypePool;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,11 +42,31 @@ public class PluginContextTest {
         TestCase.assertEquals("User", User.type());
     }
 
+    /**
+     * 多重增强测试
+     */
     @Test
-    public void enhanceTest() {
+    public void multiEnhanceTest() {
         AthenaAgent.premain("athena-config-2.yml", ByteBuddyAgent.install());
         TestCase.assertEquals("lili-hello-world", new User1().getName());
         TestCase.assertEquals("User1-static", User1.type());
+    }
+
+    @Test
+    public void matcherTest() {
+        PluginContext context = PluginContext.initPluginContext("athena-config.yml");
+        String name = PluginContextTest.class.getName();
+        TypeDescription typeDescription = TypePool.Default.ofSystemLoader().describe(name).resolve();
+        TestCase.assertTrue(!context.getExcludesMatcher().matches(typeDescription));
+
+        name = "com.org.test.bean.User";
+        typeDescription = TypePool.Default.ofSystemLoader().describe(name).resolve();
+        TestCase.assertTrue(context.getExcludesMatcher().matches(typeDescription));
+
+        TestCase.assertTrue(ElementMatchers.named(name).and(context.getExcludesMatcher()).matches(typeDescription));
+        TestCase.assertTrue(context.getExcludesMatcher().and(ElementMatchers.named(name)).matches(typeDescription));
+
+
     }
 
 }
