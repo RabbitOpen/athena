@@ -3,15 +3,15 @@ package rabbit.open.athena.plugin.common.context;
 /**
  * 增强对象
  */
-public class EnhancedObject {
+public class AgentContext {
 
     private Object realObject;
 
-    public EnhancedObject() {
+    public AgentContext() {
         this(null);
     }
 
-    public EnhancedObject(Object realObject) {
+    public AgentContext(Object realObject) {
         this.realObject = realObject;
     }
 
