@@ -50,7 +50,7 @@ public abstract class AbstractInterceptor {
             result = getEnhancer().afterMethod(context, method, args, result);
             return result;
         } catch (Throwable t) {
-            getEnhancer().onException(context, method, args, result);
+            getEnhancer().onException(context, method, args, result, t);
             return result;
         }
     }

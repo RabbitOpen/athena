@@ -23,9 +23,8 @@ public interface PluginService {
     List<AthenaPluginDefinition> getEnabledPlugins();
 
     /**
-     * 加载指定的插件
-     * @param definitions
+     * 加载配置的插件
      */
-    void loadPlugins(List<Class<? extends AthenaPluginDefinition>> definitions);
+    void loadPlugins();
 
 }

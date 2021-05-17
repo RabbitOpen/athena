@@ -1,6 +1,6 @@
 package com.org.test.def;
 
-import com.org.test.SimplePluginDefinition;
+import com.org.test.SimplePluginGroup;
 import com.org.test.agent.AppendHello;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
@@ -11,7 +11,7 @@ import static net.bytebuddy.matcher.ElementMatchers.named;
 /**
  * 简单成员方法插件
  */
-public class User1MemberMethodDef implements SimplePluginDefinition {
+public class User1MemberMethodDef implements SimplePluginGroup {
 
     @Override
     public ElementMatcher.Junction<TypeDescription> classMatcher() {

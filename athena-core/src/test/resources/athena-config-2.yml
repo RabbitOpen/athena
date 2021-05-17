@@ -5,9 +5,9 @@ agent:
       - com.org.test.def.User1MemberMethodDef
       - com.org.test.def.User1MemberMethodDef2
       - com.org.test.def.User1StaticMethodDef
-    #只允许以下插件定义有效， 如果不指定，则全部有效
-    enabledPluginDefinitions:
-      - com.org.test.SimplePluginDefinition
+    #只允许以下插件组有效， 如果不指定，则全部有效
+    enabledPluginGroups:
+      - com.org.test.SimplePluginGroup
 
 
 

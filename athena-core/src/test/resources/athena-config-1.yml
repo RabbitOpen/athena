@@ -4,8 +4,8 @@ agent:
     enabledPlugins:
       - com.org.test.def.UserAndRoleMemberMethodDef
     #只允许以下插件定义有效， 如果不指定，则全部有效
-    enabledPluginDefinitions:
-      - com.org.test.SimplePluginDefinition
+    enabledPluginGroups:
+      - com.org.test.SimplePluginGroup
 
 
 

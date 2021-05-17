@@ -13,5 +13,5 @@ public interface ClassEnhancer {
 
     Object afterMethod(AgentContext context, Method targetMethod, Object[] args, Object result);
 
-    void onException(AgentContext context, Method targetMethod, Object[] args, Object result);
+    void onException(AgentContext context, Method targetMethod, Object[] args, Object result, Throwable t);
 }

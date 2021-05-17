@@ -18,7 +18,7 @@ public class AppendWorld implements ClassEnhancer {
     }
 
     @Override
-    public void onException(AgentContext context, Method targetMethod, Object[] args, Object result) {
+    public void onException(AgentContext context, Method targetMethod, Object[] args, Object result, Throwable t) {
 
     }
 }

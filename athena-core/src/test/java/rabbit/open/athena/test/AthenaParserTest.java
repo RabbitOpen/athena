@@ -20,7 +20,7 @@ public class AthenaParserTest {
     public void parseTest() {
         AthenaMetaData metaData = AthenaMetaData.readBy("athena-config.yml");
         logger.info("config: {}", metaData);
-        TestCase.assertEquals(0, metaData.getEnabledPlugins().size());
+        TestCase.assertEquals(2, metaData.getEnabledPlugins().size());
         metaData = AthenaMetaData.readBy("empty.yml");
         TestCase.assertEquals(0, metaData.getEnabledPlugins().size());
     }

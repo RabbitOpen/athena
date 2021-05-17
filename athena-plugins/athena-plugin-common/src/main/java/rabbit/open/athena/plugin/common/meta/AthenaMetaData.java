@@ -3,7 +3,6 @@ package rabbit.open.athena.plugin.common.meta;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
-import rabbit.open.athena.plugin.common.AthenaPluginDefinition;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -23,47 +22,16 @@ public class AthenaMetaData {
     @Property("agent.plugin.enabledPlugins")
     private List<String> enabledPlugins = new ArrayList<>();
 
-    // 外部允许有效的插件定义（配置）
-    @Property("agent.plugin.enabledPluginDefinitions")
-    private List<String> enabledPluginDefinitions = new ArrayList<>();
+    // 外部允许有效的插件组（配置）
+    @Property("agent.plugin.enabledPluginGroups")
+    private List<String> enabledPluginGroups = new ArrayList<>();
 
-    /**
-     * 获取申明的有效插件
-     * @return
-     */
-    public List<Class<? extends AthenaPluginDefinition>> getEnabledPlugins() {
-        List<Class<? extends AthenaPluginDefinition>> plugins = new ArrayList<>();
-        for (String definition : enabledPlugins) {
-            try {
-                plugins.add((Class<? extends AthenaPluginDefinition>) Class.forName(definition));
-            } catch (ClassNotFoundException e) {
-                logger.error("plugin class[{}] is not found!", definition);
-                continue;
-            }
-        }
-        return plugins;
+    public List<String> getEnabledPlugins() {
+        return enabledPlugins;
     }
 
-    /**
-     * 获取外部声明的插件定义
-     * @return
-     */
-    public List<Class<? extends AthenaPluginDefinition>> getEnabledPluginDefinitions() {
-        List<Class<? extends AthenaPluginDefinition>> definitions = new ArrayList<>();
-        for (String definition : enabledPluginDefinitions) {
-            try {
-                Class<?> clz = Class.forName(definition);
-                if (AthenaPluginDefinition.class.isAssignableFrom(clz)) {
-                    definitions.add((Class<? extends AthenaPluginDefinition>) clz);
-                } else {
-                    logger.error("[{}] is not a valid plugin definition class!", definition);
-                }
-            } catch (ClassNotFoundException e) {
-                logger.error("plugin[{}] is not existed!", definition);
-                continue;
-            }
-        }
-        return definitions;
+    public List<String> getEnabledPluginGroups() {
+        return enabledPluginGroups;
     }
 
     /**
@@ -130,7 +98,7 @@ public class AthenaMetaData {
 
     @Override
     public final String toString() {
-        StringBuilder sb = new StringBuilder(getClass().getSimpleName() + " : [{");
+        StringBuilder sb = new StringBuilder("[{");
         for (int i = 0; i < AthenaMetaData.class.getDeclaredFields().length; i++) {
             Field field = AthenaMetaData.class.getDeclaredFields()[i];
             try {
