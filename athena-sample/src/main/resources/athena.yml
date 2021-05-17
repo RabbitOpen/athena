@@ -3,6 +3,6 @@ agent:
   plugin:
     enabledPlugins:
       - com.org.test.def.UserAndRoleMemberMethodDef
-    enabledPluginGroups
+    enabledPluginGroups:
       - com.org.test.SimplePluginGroup
 
