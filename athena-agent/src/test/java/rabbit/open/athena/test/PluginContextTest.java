@@ -10,7 +10,7 @@ import net.bytebuddy.pool.TypePool;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import rabbit.open.athena.core.AthenaAgent;
+import rabbit.open.athena.agent.core.AthenaAgent;
 import rabbit.open.athena.plugin.common.AthenaPluginDefinition;
 import rabbit.open.athena.plugin.common.impl.PluginContext;
 
@@ -34,7 +34,7 @@ public class PluginContextTest {
         TypeDescription typeDescription = TypePool.Default.ofSystemLoader()
                 .describe("com.org.test.bean.User").resolve();
         List<AthenaPluginDefinition> plugins = context.getMatchedPlugins(typeDescription);
-        TestCase.assertEquals(2, plugins.size());
+        TestCase.assertEquals(1, plugins.size());
 
         // 只增强了的成员方法
         AthenaAgent.premain("athena-config-1.yml", ByteBuddyAgent.install());

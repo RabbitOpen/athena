@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,13 +17,17 @@ public class AthenaMetaData {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
-    // 外部允许有效的插件（配置）
+    // 应用端配置的有效插件
     @Property("agent.plugin.enabledPlugins")
     private List<String> enabledPlugins = new ArrayList<>();
 
-    // 外部允许有效的插件组（配置）
+    // 应用端配置的有效插件组
     @Property("agent.plugin.enabledPluginGroups")
     private List<String> enabledPluginGroups = new ArrayList<>();
+
+    // 接入应用名
+    @Property("agent.application.name")
+    private String applicationName = "app";
 
     public List<String> getEnabledPlugins() {
         return enabledPlugins;
@@ -102,7 +105,7 @@ public class AthenaMetaData {
         for (int i = 0; i < AthenaMetaData.class.getDeclaredFields().length; i++) {
             Field field = AthenaMetaData.class.getDeclaredFields()[i];
             try {
-                Object value = getGetter(field).invoke(this);
+                Object value = field.get(this);
                 if (null == value || null == field.getAnnotation(Property.class)) {
                     continue;
                 }
@@ -110,18 +113,12 @@ public class AthenaMetaData {
                 if (i != AthenaMetaData.class.getDeclaredFields().length - 1) {
                     sb.append(", ");
                 }
-            } catch (NoSuchMethodException e) {
-                continue;
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         }
         sb.append("\n}]");
         return sb.toString();
-    }
-
-    private Method getGetter(Field field) throws NoSuchMethodException {
-        return getClass().getDeclaredMethod("get" + field.getName().substring(0, 1).toUpperCase() + field.getName().substring(1));
     }
 
     private Object asText(Object value) {

@@ -1,4 +1,4 @@
-package rabbit.open.athena.core;
+package rabbit.open.athena.agent.core;
 
 import net.bytebuddy.agent.builder.AgentBuilder;
 import net.bytebuddy.description.type.TypeDescription;
@@ -6,7 +6,7 @@ import net.bytebuddy.dynamic.DynamicType;
 import net.bytebuddy.utility.JavaModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rabbit.open.athena.core.transformer.DefaultTransformer;
+import rabbit.open.athena.agent.core.transformer.DefaultTransformer;
 import rabbit.open.athena.plugin.common.AthenaPluginDefinition;
 import rabbit.open.athena.plugin.common.impl.PluginContext;
 

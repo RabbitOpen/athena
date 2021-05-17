@@ -112,7 +112,7 @@ public class PluginContext implements PluginService {
     @Override
     public List<AthenaPluginDefinition> getMatchedPlugins(TypeDescription type) {
         List<AthenaPluginDefinition> plugins = new ArrayList<>();
-        for (AthenaPluginDefinition definition : pluginDefinitions) {
+        for (AthenaPluginDefinition definition : getEnabledPlugins()) {
             if (!definition.classMatcher().matches(type)) {
                 continue;
             }

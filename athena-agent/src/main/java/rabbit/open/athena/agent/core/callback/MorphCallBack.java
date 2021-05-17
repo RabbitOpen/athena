@@ -1,4 +1,4 @@
-package rabbit.open.athena.core.callback;
+package rabbit.open.athena.agent.core.callback;
 
 /**
  * 方法拦截回调定义

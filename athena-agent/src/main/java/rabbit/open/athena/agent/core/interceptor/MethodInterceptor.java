@@ -1,6 +1,6 @@
-package rabbit.open.athena.core.interceptor;
+package rabbit.open.athena.agent.core.interceptor;
 
-import rabbit.open.athena.core.exception.AthenaException;
+import rabbit.open.athena.agent.core.exception.AthenaException;
 import rabbit.open.athena.plugin.common.AthenaPluginDefinition;
 import rabbit.open.athena.plugin.common.ClassEnhancer;
 import rabbit.open.athena.plugin.common.context.AgentContext;
@@ -11,13 +11,13 @@ import java.util.function.Supplier;
 /**
  * 抽象拦截器
  */
-public abstract class AbstractInterceptor {
+public abstract class MethodInterceptor {
 
     protected AthenaPluginDefinition pluginDefinition;
 
     private ClassEnhancer enhancer;
 
-    public AbstractInterceptor(AthenaPluginDefinition pluginDefinition) {
+    public MethodInterceptor(AthenaPluginDefinition pluginDefinition) {
         this.pluginDefinition = pluginDefinition;
         try {
             enhancer = pluginDefinition.enhancerClass().newInstance();

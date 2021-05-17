@@ -1,10 +1,10 @@
-package rabbit.open.athena.core.interceptor;
+package rabbit.open.athena.agent.core.interceptor;
 
 import net.bytebuddy.implementation.bind.annotation.AllArguments;
 import net.bytebuddy.implementation.bind.annotation.Morph;
 import net.bytebuddy.implementation.bind.annotation.Origin;
 import net.bytebuddy.implementation.bind.annotation.RuntimeType;
-import rabbit.open.athena.core.callback.MorphCallBack;
+import rabbit.open.athena.agent.core.callback.MorphCallBack;
 import rabbit.open.athena.plugin.common.AthenaPluginDefinition;
 import rabbit.open.athena.plugin.common.context.AgentContext;
 
@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 /**
  * 静态函数拦截器
  */
-public class StaticMethodInterceptor extends AbstractInterceptor {
+public class StaticMethodInterceptor extends MethodInterceptor {
 
     public StaticMethodInterceptor(AthenaPluginDefinition pluginDefinition) {
         super(pluginDefinition);

@@ -1,6 +1,6 @@
 agent:
   plugin:
-    #只允许以下插件有效，如果不指定，则全部有效
+    #只允许以下插件有效，如果不指定，则全部有效, 排列顺序决定了增强顺序
     enabledPlugins:
       - com.org.test.def.User1MemberMethodDef
       - com.org.test.def.User1MemberMethodDef2

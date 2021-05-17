@@ -18,7 +18,7 @@
 
     <modules>
         <module>athena-sample</module>
-        <module>athena-core</module>
+        <module>athena-agent</module>
         <module>athena-plugins</module>
     </modules>
 
