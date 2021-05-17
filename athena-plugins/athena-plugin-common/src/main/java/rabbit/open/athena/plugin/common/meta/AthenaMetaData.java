@@ -3,6 +3,7 @@ package rabbit.open.athena.plugin.common.meta;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
+import rabbit.open.athena.plugin.common.trace.MemoryTraceCollector;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -29,12 +30,26 @@ public class AthenaMetaData {
     @Property("agent.application.name")
     private String applicationName = "app";
 
+    // 收集器名字
+    @Property("agent.trace.collector.clzName")
+    private String traceCollectorClz = MemoryTraceCollector.class.getName();
+
+    @Property("agent.trace.collector.server.host")
+    private String collectorServerHost = "localhost";
+
+    @Property("agent.trace.collector.server.port")
+    private int collectorServerPort = 8899;
+
     public List<String> getEnabledPlugins() {
         return enabledPlugins;
     }
 
     public List<String> getEnabledPluginGroups() {
         return enabledPluginGroups;
+    }
+
+    public String getApplicationName() {
+        return applicationName;
     }
 
     /**
@@ -138,5 +153,17 @@ public class AthenaMetaData {
         } else {
             return value.toString();
         }
+    }
+
+    public String getTraceCollectorClz() {
+        return traceCollectorClz;
+    }
+
+    public String getCollectorServerHost() {
+        return collectorServerHost;
+    }
+
+    public int getCollectorServerPort() {
+        return collectorServerPort;
     }
 }

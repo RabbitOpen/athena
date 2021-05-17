@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import rabbit.open.athena.agent.core.AthenaAgent;
 import rabbit.open.athena.plugin.common.AthenaPluginDefinition;
-import rabbit.open.athena.plugin.common.impl.PluginContext;
+import rabbit.open.athena.plugin.common.context.PluginContext;
 
 import java.util.List;
 

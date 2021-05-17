@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rabbit.open.athena.agent.core.transformer.DefaultTransformer;
 import rabbit.open.athena.plugin.common.AthenaPluginDefinition;
-import rabbit.open.athena.plugin.common.impl.PluginContext;
+import rabbit.open.athena.plugin.common.context.PluginContext;
 
 import java.lang.instrument.Instrumentation;
 import java.util.List;

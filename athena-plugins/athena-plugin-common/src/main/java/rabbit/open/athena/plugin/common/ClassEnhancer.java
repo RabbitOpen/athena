@@ -1,7 +1,5 @@
 package rabbit.open.athena.plugin.common;
 
-import rabbit.open.athena.plugin.common.context.AgentContext;
-
 import java.lang.reflect.Method;
 
 /**
@@ -9,9 +7,9 @@ import java.lang.reflect.Method;
  */
 public interface ClassEnhancer {
 
-    void beforeMethod(AgentContext context, Method targetMethod, Object[] args);
+    void beforeMethod(Object objectEnhanced, Method targetMethod, Object[] args);
 
-    Object afterMethod(AgentContext context, Method targetMethod, Object[] args, Object result);
+    Object afterMethod(Object objectEnhanced, Method targetMethod, Object[] args, Object result);
 
-    void onException(AgentContext context, Method targetMethod, Object[] args, Object result, Throwable t);
+    void onException(Object objectEnhanced, Method targetMethod, Object[] args, Object result, Throwable t);
 }

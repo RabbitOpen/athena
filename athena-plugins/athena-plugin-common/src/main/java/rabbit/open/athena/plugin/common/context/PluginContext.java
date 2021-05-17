@@ -1,4 +1,4 @@
-package rabbit.open.athena.plugin.common.impl;
+package rabbit.open.athena.plugin.common.context;
 
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rabbit.open.athena.plugin.common.AthenaPluginDefinition;
 import rabbit.open.athena.plugin.common.PluginService;
+import rabbit.open.athena.plugin.common.TraceInfoCollector;
 import rabbit.open.athena.plugin.common.meta.AthenaMetaData;
 
 import java.net.URL;
@@ -34,6 +35,10 @@ public class PluginContext implements PluginService {
 
     );
 
+    private static PluginContext context;
+
+    private TraceInfoCollector collector;
+
     /**
      * 需要排除的包
      */
@@ -60,7 +65,7 @@ public class PluginContext implements PluginService {
      * @return
      */
     public static PluginContext initPluginContext(String athenaConfigFileName) {
-        PluginContext context = new PluginContext();
+        PluginContext.context = new PluginContext();
         String fileName = (null == athenaConfigFileName ? DEFAULT_ATHENA_CONFIG_FILE_NAME : athenaConfigFileName);
         URL resource = PluginContext.class.getResource("/" + fileName);
         if (null == resource) {
@@ -71,6 +76,11 @@ public class PluginContext implements PluginService {
             logger.info("load config from file[{}] : {}", fileName, context.metaData);
         }
         context.loadPlugins();
+        context.getOrInitCollector();
+        return context;
+    }
+
+    public static PluginContext getContext() {
         return context;
     }
 
@@ -184,5 +194,21 @@ public class PluginContext implements PluginService {
             }
         }
         return definitions;
+    }
+
+    public TraceInfoCollector getOrInitCollector() {
+        if (null == collector) {
+            synchronized (this) {
+                if (null == collector) {
+                    try {
+                        collector = (TraceInfoCollector) Class.forName(getMetaData().getTraceCollectorClz()).newInstance();
+                        collector.init(getMetaData().getCollectorServerHost(), getMetaData().getCollectorServerPort());
+                    } catch (Exception e) {
+                        logger.error(e.getMessage(), e);
+                    }
+                }
+            }
+        }
+        return collector;
     }
 }

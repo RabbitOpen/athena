@@ -1,4 +1,4 @@
-package rabbit.open.athena.agent.core.exception;
+package rabbit.open.athena.plugin.common.exception;
 
 
 public class AthenaException extends RuntimeException {

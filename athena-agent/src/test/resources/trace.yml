@@ -1,0 +1,14 @@
+agent:
+  plugin:
+    enabledPlugins:
+      - com.org.athena.test.trace.TracePluginDefinition
+    enabledPluginGroups:
+      - com.org.athena.test.TracePluginGroup
+
+  # 以下是默认追踪链相关配置
+  trace:
+    collector:
+      server:
+        host: localhost
+        port: 8899
+      clzName: com.org.athena.test.trace.SampleTraceInfoCollector

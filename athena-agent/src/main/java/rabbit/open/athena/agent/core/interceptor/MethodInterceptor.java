@@ -1,9 +1,8 @@
 package rabbit.open.athena.agent.core.interceptor;
 
-import rabbit.open.athena.agent.core.exception.AthenaException;
 import rabbit.open.athena.plugin.common.AthenaPluginDefinition;
 import rabbit.open.athena.plugin.common.ClassEnhancer;
-import rabbit.open.athena.plugin.common.context.AgentContext;
+import rabbit.open.athena.plugin.common.exception.AthenaException;
 
 import java.lang.reflect.Method;
 import java.util.function.Supplier;
@@ -36,21 +35,20 @@ public abstract class MethodInterceptor {
      * 方法拦截
      * @param method
      * @param args
-     * @param contextSupplier
+     * @param objectEnhanced
      * @param resultSupplier
      * @return
      */
-    protected Object doInterceptor(Method method, Object[] args, Supplier<AgentContext> contextSupplier,
-                                   Supplier<Object> resultSupplier) throws Exception {
+    protected Object doInterceptor(Method method, Object[] args, Object objectEnhanced,
+                                   Supplier<Object> resultSupplier) {
         Object result = null;
-        AgentContext context = contextSupplier.get();
         try {
-            getEnhancer().beforeMethod(context, method, args);
+            getEnhancer().beforeMethod(objectEnhanced, method, args);
             result = resultSupplier.get();
-            result = getEnhancer().afterMethod(context, method, args, result);
+            result = getEnhancer().afterMethod(objectEnhanced, method, args, result);
             return result;
         } catch (Throwable t) {
-            getEnhancer().onException(context, method, args, result, t);
+            getEnhancer().onException(objectEnhanced, method, args, result, t);
             return result;
         }
     }
