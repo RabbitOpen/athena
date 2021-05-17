@@ -1,13 +1,10 @@
 package com.org.athena.test;
 
 import com.org.athena.test.service.UserService;
-import com.org.athena.test.trace.ExecuteCostTraceInfo;
 import com.org.athena.test.trace.SampleTraceInfoCollector;
-import com.org.test.bean.User;
 import junit.framework.TestCase;
 import net.bytebuddy.agent.ByteBuddyAgent;
 import org.junit.Test;
-import org.junit.experimental.theories.Theories;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.slf4j.Logger;
@@ -17,10 +14,9 @@ import rabbit.open.athena.plugin.common.TraceInfo;
 import rabbit.open.athena.plugin.common.TraceInfoCollector;
 import rabbit.open.athena.plugin.common.context.PluginContext;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 
@@ -31,7 +27,9 @@ public class TraceTest {
 
     @Test
     public void traceTest() throws InterruptedException {
-        List<TraceInfo> traceInfoList = new ArrayList<>();
+
+        // 多线程访问，用线程安全的队列
+        ArrayBlockingQueue<TraceInfo> traceInfoList = new ArrayBlockingQueue<>(100);
         AthenaAgent.premain("trace.yml", ByteBuddyAgent.install());
         SampleTraceInfoCollector collector = (SampleTraceInfoCollector) PluginContext.getContext().getOrInitCollector();
         collector.setProxy(new TraceInfoCollector() {
@@ -51,9 +49,6 @@ public class TraceTest {
 
             }
         });
-
-//        new UserService().doSomething(10, "hello");
-//        new UserService().doSomething(10, "hello");
         int threadCount = 12;
         CountDownLatch cdl = new CountDownLatch(threadCount);
         for (int i = 0; i < threadCount; i++) {
@@ -63,7 +58,6 @@ public class TraceTest {
             }).start();
         }
         cdl.await();
-
         logger.info("size: {}", traceInfoList.size());
         TestCase.assertEquals(4 * 12, traceInfoList.size());
         Map<String, List<TraceInfo>> map = traceInfoList.stream().collect(Collectors.groupingBy(TraceInfo::getTraceId, Collectors.toList()));
@@ -80,7 +74,6 @@ public class TraceTest {
             TestCase.assertEquals(1, list.get(1).getDepth());
             TestCase.assertEquals(1, list.get(2).getDepth());
             TestCase.assertEquals(2, list.get(3).getDepth());
-
 
             TestCase.assertEquals(0, list.get(0).getExecuteOrder());
             TestCase.assertEquals(0, list.get(1).getExecuteOrder());

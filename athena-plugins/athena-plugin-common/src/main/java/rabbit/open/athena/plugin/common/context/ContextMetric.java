@@ -1,33 +1,28 @@
 package rabbit.open.athena.plugin.common.context;
 
+import rabbit.open.athena.plugin.common.TraceInfo;
+
 import java.lang.reflect.Method;
 
 public class ContextMetric {
 
-    // 被增强的对象
-    private Object enhancedObj;
+    // trace info
+    private TraceInfo traceInfo;
 
     // 被增强的方法
     private Method method;
 
-    // 调用入参
-    private Object[] args;
-
-    public ContextMetric(Object enhancedObj, Method method, Object[] args) {
-        this.enhancedObj = enhancedObj;
+    public ContextMetric(TraceInfo traceInfo, Method method) {
+        this.traceInfo = traceInfo;
         this.method = method;
-        this.args = args;
     }
 
-    public Object getEnhancedObj() {
-        return enhancedObj;
+    public Object getTraceInfo() {
+        return traceInfo;
     }
 
     public Method getMethod() {
         return method;
     }
 
-    public Object[] getArgs() {
-        return args;
-    }
 }

@@ -24,9 +24,9 @@ public abstract class MetricClassEnhancer<T extends TraceInfo> implements ClassE
             traceInfo.setSimpleMethodName(targetMethod.getName());
             traceInfo.setTargetClzName(targetMethod.getDeclaringClass().getName());
             if (!ContextManager.isOpen()) {
-                traceInfo.setTraceId(Thread.currentThread().getName()  + " -- " + UUID.randomUUID().toString().replace("-", ""));
+                traceInfo.setTraceId(UUID.randomUUID().toString().replace("-", ""));
                 traceInfo.setRoot(true);
-                ContextManager.open(objectEnhanced, targetMethod, args);
+                ContextManager.open(traceInfo, targetMethod);
             } else {
                 TraceInfo parent = ContextManager.getTraceInfo();
                 traceInfo.setParent(parent);
@@ -55,13 +55,13 @@ public abstract class MetricClassEnhancer<T extends TraceInfo> implements ClassE
     @Override
     public final Object afterMethod(Object objectEnhanced, Method targetMethod, Object[] args, Object result) {
         safelyHandle(() -> {
+            TraceInfo traceInfo = ContextManager.getTraceInfo();
             try {
-                TraceInfo traceInfo = ContextManager.getTraceInfo();
                 afterMethod(objectEnhanced, targetMethod, args, result, (T) traceInfo);
                 ContextManager.setTraceInfo(traceInfo.getParent());
                 PluginContext.getContext().getOrInitCollector().doCollection(traceInfo);
             } finally {
-                ContextManager.close(objectEnhanced, targetMethod, args);
+                ContextManager.close(traceInfo, targetMethod);
             }
         });
         return result;
@@ -70,14 +70,14 @@ public abstract class MetricClassEnhancer<T extends TraceInfo> implements ClassE
     @Override
     public final void onException(Object objectEnhanced, Method targetMethod, Object[] args, Object result, Throwable t) {
         safelyHandle(() -> {
+            TraceInfo traceInfo = ContextManager.getTraceInfo();
             try {
-                TraceInfo traceInfo = ContextManager.getTraceInfo();
                 traceInfo.setExceptionOccurred(true);
                 onException(objectEnhanced, targetMethod, args, result, t, (T) traceInfo);
                 ContextManager.setTraceInfo(traceInfo.getParent());
                 PluginContext.getContext().getOrInitCollector().doCollection(traceInfo);
             } finally {
-                ContextManager.close(objectEnhanced, targetMethod, args);
+                ContextManager.close(traceInfo, targetMethod);
             }
         });
     }

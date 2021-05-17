@@ -20,14 +20,19 @@ public class ContextManager {
 
     /**
      * 开启增强
-     * @return
+     * @param traceInfo
+     * @param method
      */
-    public static void open(Object enhancedObj, Method method, Object[] args) {
+    public static void open(TraceInfo traceInfo, Method method) {
         if (!isOpen()) {
-            metricContext.set(new ContextMetric(enhancedObj, method, args));
+            metricContext.set(new ContextMetric(traceInfo, method));
         }
     }
 
+    /**
+     * 设置traceInfo
+     * @param info
+     */
     public static void setTraceInfo(TraceInfo info) {
         traceInfoContext.set(info);
     }
@@ -38,23 +43,16 @@ public class ContextManager {
 
     /**
      * 关闭增强
-     * @param enhancedObj
+     * @param traceInfo
      * @param method
-     * @param args
      */
-    public static void close(Object enhancedObj, Method method, Object[] args) {
+    public static void close(TraceInfo traceInfo, Method method) {
         if (!isOpen()) {
             return;
         }
         ContextMetric contextMetric = metricContext.get();
-        if (contextMetric.getMethod() == method && contextMetric.getEnhancedObj() == enhancedObj
-            && contextMetric.getArgs() == args) {
+        if (contextMetric.getMethod() == method && contextMetric.getTraceInfo() == traceInfo) {
             metricContext.remove();
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) {
-
-            }
             traceInfoContext.remove();
         }
     }
