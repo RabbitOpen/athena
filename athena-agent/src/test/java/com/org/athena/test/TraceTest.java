@@ -1,5 +1,6 @@
 package com.org.athena.test;
 
+import com.org.athena.test.bean.SimpleService;
 import com.org.athena.test.service.UserService;
 import com.org.athena.test.trace.SampleTraceInfoCollector;
 import junit.framework.TestCase;
@@ -25,11 +26,12 @@ public class TraceTest {
 
     Logger logger = LoggerFactory.getLogger(getClass());
 
+    ArrayBlockingQueue<TraceInfo> traceInfoList = new ArrayBlockingQueue<>(128);
+
     @Test
     public void traceTest() throws InterruptedException {
 
         // 多线程访问，用线程安全的队列
-        ArrayBlockingQueue<TraceInfo> traceInfoList = new ArrayBlockingQueue<>(100);
         AthenaAgent.premain("trace.yml", ByteBuddyAgent.install());
         SampleTraceInfoCollector collector = (SampleTraceInfoCollector) PluginContext.getContext().getOrInitCollector();
         collector.setProxy(new TraceInfoCollector() {
@@ -81,5 +83,11 @@ public class TraceTest {
             TestCase.assertEquals(0, list.get(3).getExecuteOrder());
         }
 
+        traceInfoList = new ArrayBlockingQueue<>(128);
+        SimpleService simpleService = new SimpleService();
+        simpleService.doSomething();
+        TestCase.assertEquals(5, traceInfoList.size());
+        map = traceInfoList.stream().collect(Collectors.groupingBy(TraceInfo::getTraceId, Collectors.toList()));
+        TestCase.assertEquals(2, map.size());
     }
 }
