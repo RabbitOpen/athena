@@ -12,15 +12,15 @@ import org.slf4j.LoggerFactory;
 import rabbit.open.athena.agent.core.callback.MorphCallBack;
 import rabbit.open.athena.agent.core.interceptor.MemberMethodInterceptor;
 import rabbit.open.athena.agent.core.interceptor.StaticMethodInterceptor;
-import rabbit.open.athena.plugin.common.AthenaPluginDefinition;
+import rabbit.open.athena.plugin.common.PluginDefinition;
 
 public class DefaultTransformer implements AgentBuilder.Transformer {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
 
-    private AthenaPluginDefinition plugin;
+    private PluginDefinition plugin;
 
-    public DefaultTransformer(AthenaPluginDefinition plugin) {
+    public DefaultTransformer(PluginDefinition plugin) {
         this.plugin = plugin;
     }
 

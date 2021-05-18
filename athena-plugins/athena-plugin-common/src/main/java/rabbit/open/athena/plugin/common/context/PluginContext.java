@@ -4,7 +4,7 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rabbit.open.athena.plugin.common.AthenaPluginDefinition;
+import rabbit.open.athena.plugin.common.PluginDefinition;
 import rabbit.open.athena.plugin.common.PluginService;
 import rabbit.open.athena.plugin.common.TraceInfoCollector;
 import rabbit.open.athena.plugin.common.meta.AthenaMetaData;
@@ -31,7 +31,7 @@ public class PluginContext implements PluginService {
     private AthenaMetaData metaData;
 
     // 默认插件列组表
-    private static final List<Class<? extends AthenaPluginDefinition>> DEFAULT_GROUPS = Arrays.asList(
+    private static final List<Class<? extends PluginDefinition>> DEFAULT_GROUPS = Arrays.asList(
 
     );
 
@@ -57,7 +57,7 @@ public class PluginContext implements PluginService {
     /**
      * 已知的插件
      */
-    private List<AthenaPluginDefinition> pluginDefinitions = new ArrayList<>();
+    private List<PluginDefinition> pluginDefinitions = new ArrayList<>();
 
     /**
      * 初始化插件上下文
@@ -103,16 +103,16 @@ public class PluginContext implements PluginService {
     @Override
     public void loadPlugins() {
         List<String> pluginGroups = getMetaData().getEnabledPluginGroups();
-        List<Class<? extends AthenaPluginDefinition>> groupDefinitions;
+        List<Class<? extends PluginDefinition>> groupDefinitions;
         if (pluginGroups.isEmpty()) {
             logger.info("use default plugin groups: {}", DEFAULT_GROUPS);
             groupDefinitions = DEFAULT_GROUPS;
         } else {
             groupDefinitions = getDeclaredPluginGroups();
         }
-        for (Class<? extends AthenaPluginDefinition> groupDefinition : groupDefinitions) {
-            ServiceLoader<? extends AthenaPluginDefinition> services = ServiceLoader.load(groupDefinition);
-            for (AthenaPluginDefinition definition : services) {
+        for (Class<? extends PluginDefinition> groupDefinition : groupDefinitions) {
+            ServiceLoader<? extends PluginDefinition> services = ServiceLoader.load(groupDefinition);
+            for (PluginDefinition definition : services) {
                 logger.info("load plugin definition: {} --> {}", groupDefinition.getSimpleName(), definition.getClass().getName());
                 pluginDefinitions.add(definition);
             }
@@ -120,9 +120,9 @@ public class PluginContext implements PluginService {
     }
 
     @Override
-    public List<AthenaPluginDefinition> getMatchedPlugins(TypeDescription type) {
-        List<AthenaPluginDefinition> plugins = new ArrayList<>();
-        for (AthenaPluginDefinition definition : getEnabledPlugins()) {
+    public List<PluginDefinition> getMatchedPlugins(TypeDescription type) {
+        List<PluginDefinition> plugins = new ArrayList<>();
+        for (PluginDefinition definition : getEnabledPlugins()) {
             if (!definition.classMatcher().matches(type)) {
                 continue;
             }
@@ -140,14 +140,14 @@ public class PluginContext implements PluginService {
      * @return
      */
     @Override
-    public List<AthenaPluginDefinition> getEnabledPlugins() {
-        List<Class<? extends AthenaPluginDefinition>> enabledPlugins = getDeclaredPlugins();
+    public List<PluginDefinition> getEnabledPlugins() {
+        List<Class<? extends PluginDefinition>> enabledPlugins = getDeclaredPlugins();
         if (enabledPlugins.isEmpty()) {
             return pluginDefinitions;
         } else {
-            List<AthenaPluginDefinition> list = new ArrayList<>();
-            for (Class<? extends AthenaPluginDefinition> enabledPlugin : enabledPlugins) {
-                for (AthenaPluginDefinition existedPlugin : pluginDefinitions) {
+            List<PluginDefinition> list = new ArrayList<>();
+            for (Class<? extends PluginDefinition> enabledPlugin : enabledPlugins) {
+                for (PluginDefinition existedPlugin : pluginDefinitions) {
                     if (enabledPlugin.equals(existedPlugin.getClass())) {
                         list.add(existedPlugin);
                     }
@@ -161,11 +161,11 @@ public class PluginContext implements PluginService {
      * 读取meta中配置的有效插件
      * @return
      */
-    private List<Class<? extends AthenaPluginDefinition>> getDeclaredPlugins() {
-        List<Class<? extends AthenaPluginDefinition>> plugins = new ArrayList<>();
+    private List<Class<? extends PluginDefinition>> getDeclaredPlugins() {
+        List<Class<? extends PluginDefinition>> plugins = new ArrayList<>();
         for (String definition : getMetaData().getEnabledPlugins()) {
             try {
-                plugins.add((Class<? extends AthenaPluginDefinition>) Class.forName(definition));
+                plugins.add((Class<? extends PluginDefinition>) Class.forName(definition));
             } catch (ClassNotFoundException e) {
                 logger.error("plugin class[{}] is not found!", definition);
                 continue;
@@ -178,13 +178,13 @@ public class PluginContext implements PluginService {
      * 获取外部声明的插件组
      * @return
      */
-    private List<Class<? extends AthenaPluginDefinition>> getDeclaredPluginGroups() {
-        List<Class<? extends AthenaPluginDefinition>> definitions = new ArrayList<>();
+    private List<Class<? extends PluginDefinition>> getDeclaredPluginGroups() {
+        List<Class<? extends PluginDefinition>> definitions = new ArrayList<>();
         for (String definition : getMetaData().getEnabledPluginGroups()) {
             try {
                 Class<?> clz = Class.forName(definition);
-                if (AthenaPluginDefinition.class.isAssignableFrom(clz)) {
-                    definitions.add((Class<? extends AthenaPluginDefinition>) clz);
+                if (PluginDefinition.class.isAssignableFrom(clz)) {
+                    definitions.add((Class<? extends PluginDefinition>) clz);
                 } else {
                     logger.error("[{}] is not a valid plugin group class!", definition);
                 }

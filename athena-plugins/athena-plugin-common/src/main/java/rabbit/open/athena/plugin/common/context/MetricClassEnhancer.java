@@ -20,13 +20,15 @@ public abstract class MetricClassEnhancer<T extends TraceInfo> implements ClassE
         safelyHandle(() -> {
             T traceInfo = newTraceInfo();
             traceInfo.setAppName(PluginContext.getContext().getMetaData().getApplicationName());
-            traceInfo.setMethodName(targetMethod.getName() + "(" + type2Str(targetMethod.getParameterTypes()) +  ")");
-            traceInfo.setSimpleMethodName(targetMethod.getName());
+            traceInfo.setThreadName(Thread.currentThread().getName());
+            traceInfo.setFullMethodName(targetMethod.getName() + "(" + type2Str(targetMethod.getParameterTypes()) +  ")");
+            traceInfo.setMethodName(targetMethod.getName());
             traceInfo.setTargetClzName(targetMethod.getDeclaringClass().getName());
+            traceInfo.setStart(System.currentTimeMillis());
             if (!ContextManager.isOpen()) {
                 traceInfo.setTraceId(UUID.randomUUID().toString().replace("-", ""));
                 traceInfo.setRoot(true);
-                ContextManager.open(traceInfo, targetMethod);
+                ContextManager.open(traceInfo);
             } else {
                 TraceInfo parent = ContextManager.getTraceInfo();
                 traceInfo.setParent(parent);
@@ -41,27 +43,17 @@ public abstract class MetricClassEnhancer<T extends TraceInfo> implements ClassE
         });
     }
 
-    private String type2Str(Class<?>[] types) {
-        String str = "";
-        for (int i = 0; i < types.length; i++) {
-            str += types[i].getName();
-            if (i != types.length - 1) {
-                str += ", ";
-            }
-        }
-        return str;
-    }
-
     @Override
     public final Object afterMethod(Object objectEnhanced, Method targetMethod, Object[] args, Object result) {
         safelyHandle(() -> {
             TraceInfo traceInfo = ContextManager.getTraceInfo();
             try {
+                traceInfo.setEnd(System.currentTimeMillis());
                 afterMethod(objectEnhanced, targetMethod, args, result, (T) traceInfo);
                 ContextManager.setTraceInfo(traceInfo.getParent());
                 PluginContext.getContext().getOrInitCollector().doCollection(traceInfo);
             } finally {
-                ContextManager.close(traceInfo, targetMethod);
+                ContextManager.close(traceInfo);
             }
         });
         return result;
@@ -72,12 +64,13 @@ public abstract class MetricClassEnhancer<T extends TraceInfo> implements ClassE
         safelyHandle(() -> {
             TraceInfo traceInfo = ContextManager.getTraceInfo();
             try {
+                traceInfo.setEnd(System.currentTimeMillis());
                 traceInfo.setExceptionOccurred(true);
                 onException(objectEnhanced, targetMethod, args, result, t, (T) traceInfo);
                 ContextManager.setTraceInfo(traceInfo.getParent());
                 PluginContext.getContext().getOrInitCollector().doCollection(traceInfo);
             } finally {
-                ContextManager.close(traceInfo, targetMethod);
+                ContextManager.close(traceInfo);
             }
         });
     }
@@ -119,11 +112,22 @@ public abstract class MetricClassEnhancer<T extends TraceInfo> implements ClassE
      * 切面错误不能影响正常业务
      * @param task
      */
-    private void safelyHandle(Runnable task) {
+    protected void safelyHandle(Runnable task) {
         try {
             task.run();
         } catch (Throwable t) {
             logger.warn(t.getMessage(), t);
         }
+    }
+
+    protected String type2Str(Class<?>[] types) {
+        String str = "";
+        for (int i = 0; i < types.length; i++) {
+            str += types[i].getName();
+            if (i != types.length - 1) {
+                str += ", ";
+            }
+        }
+        return str;
     }
 }

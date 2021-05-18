@@ -5,7 +5,7 @@ import rabbit.open.athena.plugin.common.context.MetricClassEnhancer;
 import java.lang.reflect.Method;
 
 /**
- * 执行耗时增强
+ * 执行耗时增强(MetricClassEnhancer 自带耗时统计增强，这里只是为了做个测试)
  */
 public class ExecuteCostEnhancer extends MetricClassEnhancer<ExecuteCostTraceInfo> {
 
@@ -16,16 +16,13 @@ public class ExecuteCostEnhancer extends MetricClassEnhancer<ExecuteCostTraceInf
 
     @Override
     protected void beforeMethod(Object objectEnhanced, Method targetMethod, Object[] args, ExecuteCostTraceInfo traceInfo) {
-        traceInfo.setStart(System.currentTimeMillis());
     }
 
     @Override
     protected void afterMethod(Object objectEnhanced, Method targetMethod, Object[] args, Object result, ExecuteCostTraceInfo traceInfo) {
-        traceInfo.setEnd(System.currentTimeMillis());
     }
 
     @Override
     protected void onException(Object objectEnhanced, Method targetMethod, Object[] args, Object result, Throwable t, ExecuteCostTraceInfo traceInfo) {
-        traceInfo.setEnd(System.currentTimeMillis());
     }
 }

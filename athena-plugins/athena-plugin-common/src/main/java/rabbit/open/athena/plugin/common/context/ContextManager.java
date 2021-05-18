@@ -2,30 +2,28 @@ package rabbit.open.athena.plugin.common.context;
 
 import rabbit.open.athena.plugin.common.TraceInfo;
 
-import java.lang.reflect.Method;
-
 public class ContextManager {
 
     private static ThreadLocal<TraceInfo> traceInfoContext = new ThreadLocal<>();
 
-    private static ThreadLocal<ContextMetric> metricContext = new ThreadLocal<>();
+    // 字节增强上下文
+    private static ThreadLocal<Object> enhanceContext = new ThreadLocal<>();
 
     /**
      * 判断是否开启了增强
      * @return
      */
     public static boolean isOpen() {
-        return null != metricContext.get();
+        return null != enhanceContext.get();
     }
 
     /**
      * 开启增强
-     * @param traceInfo
-     * @param method
+     * @param context
      */
-    public static void open(TraceInfo traceInfo, Method method) {
+    public static void open(Object context) {
         if (!isOpen()) {
-            metricContext.set(new ContextMetric(traceInfo, method));
+            enhanceContext.set(context);
         }
     }
 
@@ -43,16 +41,15 @@ public class ContextManager {
 
     /**
      * 关闭增强
-     * @param traceInfo
-     * @param method
+     * @param context
      */
-    public static void close(TraceInfo traceInfo, Method method) {
+    public static void close(Object context) {
         if (!isOpen()) {
             return;
         }
-        ContextMetric contextMetric = metricContext.get();
-        if (contextMetric.getMethod() == method && contextMetric.getTraceInfo() == traceInfo) {
-            metricContext.remove();
+        Object openContext = enhanceContext.get();
+        if (openContext == context) {
+            enhanceContext.remove();
             traceInfoContext.remove();
         }
     }

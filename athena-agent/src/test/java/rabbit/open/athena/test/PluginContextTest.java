@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import rabbit.open.athena.agent.core.AthenaAgent;
-import rabbit.open.athena.plugin.common.AthenaPluginDefinition;
+import rabbit.open.athena.plugin.common.PluginDefinition;
 import rabbit.open.athena.plugin.common.context.PluginContext;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class PluginContextTest {
     @Test
     public void pluginContextTest() {
         PluginContext context = PluginContext.initPluginContext("athena-config.yml");
-        List<AthenaPluginDefinition> enabledPlugins = context.getEnabledPlugins();
+        List<PluginDefinition> enabledPlugins = context.getEnabledPlugins();
         TestCase.assertEquals(5, enabledPlugins.size());
 
         context = PluginContext.initPluginContext("athena-config-1.yml");
@@ -33,7 +33,7 @@ public class PluginContextTest {
         // 和"com.org.test.bean.User"匹配的插件有两个
         TypeDescription typeDescription = TypePool.Default.ofSystemLoader()
                 .describe("com.org.test.bean.User").resolve();
-        List<AthenaPluginDefinition> plugins = context.getMatchedPlugins(typeDescription);
+        List<PluginDefinition> plugins = context.getMatchedPlugins(typeDescription);
         TestCase.assertEquals(1, plugins.size());
 
         // 只增强了的成员方法

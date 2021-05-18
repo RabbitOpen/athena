@@ -5,7 +5,7 @@ import net.bytebuddy.implementation.bind.annotation.Morph;
 import net.bytebuddy.implementation.bind.annotation.Origin;
 import net.bytebuddy.implementation.bind.annotation.RuntimeType;
 import rabbit.open.athena.agent.core.callback.MorphCallBack;
-import rabbit.open.athena.plugin.common.AthenaPluginDefinition;
+import rabbit.open.athena.plugin.common.PluginDefinition;
 
 import java.lang.reflect.Method;
 
@@ -14,7 +14,7 @@ import java.lang.reflect.Method;
  */
 public class StaticMethodInterceptor extends MethodInterceptor {
 
-    public StaticMethodInterceptor(AthenaPluginDefinition pluginDefinition) {
+    public StaticMethodInterceptor(PluginDefinition pluginDefinition) {
         super(pluginDefinition);
     }
 

@@ -14,13 +14,13 @@ public interface PluginService {
      * @param type
      * @return
      */
-    List<AthenaPluginDefinition> getMatchedPlugins(TypeDescription type);
+    List<PluginDefinition> getMatchedPlugins(TypeDescription type);
 
     /**
      * 获取有效的插件配置
      * @return
      */
-    List<AthenaPluginDefinition> getEnabledPlugins();
+    List<PluginDefinition> getEnabledPlugins();
 
     /**
      * 加载配置的插件

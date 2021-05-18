@@ -8,7 +8,7 @@ import static net.bytebuddy.matcher.ElementMatchers.*;
 /**
  * 插件定义
  */
-public interface AthenaPluginDefinition {
+public interface PluginDefinition {
 
     /**
      * 定义哪些class可以被增强

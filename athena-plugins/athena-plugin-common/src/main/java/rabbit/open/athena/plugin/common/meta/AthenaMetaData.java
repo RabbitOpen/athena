@@ -34,9 +34,11 @@ public class AthenaMetaData {
     @Property("agent.trace.collector.clzName")
     private String traceCollectorClz = MemoryTraceCollector.class.getName();
 
+    // 收集器服务端地址
     @Property("agent.trace.collector.server.host")
     private String collectorServerHost = "localhost";
 
+    // 收集器服务端端口
     @Property("agent.trace.collector.server.port")
     private int collectorServerPort = 8899;
 

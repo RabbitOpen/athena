@@ -9,13 +9,15 @@ public abstract class TraceInfo {
 
     private TraceInfo parent;
 
+    private String threadName;
+
     private String targetClzName;
 
-    // 带参数类型
+    // 函数名
     private String methodName;
 
-    // 函数名
-    private String simpleMethodName;
+    // 函数名（带参数类型）
+    private String fullMethodName;
 
     // 跟节点标识
     private boolean isRoot = false;
@@ -33,6 +35,26 @@ public abstract class TraceInfo {
     private String appName;
 
     private boolean exceptionOccurred = false;
+
+    private Long start;
+
+    private Long end;
+
+    public Long getStart() {
+        return start;
+    }
+
+    public void setStart(Long start) {
+        this.start = start;
+    }
+
+    public Long getEnd() {
+        return end;
+    }
+
+    public void setEnd(Long end) {
+        this.end = end;
+    }
 
     public String getTraceId() {
         return traceId;
@@ -110,11 +132,19 @@ public abstract class TraceInfo {
         this.methodName = methodName;
     }
 
-    public String getSimpleMethodName() {
-        return simpleMethodName;
+    public String getFullMethodName() {
+        return fullMethodName;
     }
 
-    public void setSimpleMethodName(String simpleMethodName) {
-        this.simpleMethodName = simpleMethodName;
+    public void setFullMethodName(String fullMethodName) {
+        this.fullMethodName = fullMethodName;
+    }
+
+    public String getThreadName() {
+        return threadName;
+    }
+
+    public void setThreadName(String threadName) {
+        this.threadName = threadName;
     }
 }

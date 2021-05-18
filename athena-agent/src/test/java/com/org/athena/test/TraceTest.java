@@ -51,6 +51,9 @@ public class TraceTest {
 
             }
         });
+
+        // 第一个调用的速度会慢点，因为需要增强字节码
+        new UserService().doSomething(10, "hello");
         int threadCount = 12;
         CountDownLatch cdl = new CountDownLatch(threadCount);
         for (int i = 0; i < threadCount; i++) {
@@ -60,8 +63,9 @@ public class TraceTest {
             }).start();
         }
         cdl.await();
-        logger.info("size: {}", traceInfoList.size());
-        TestCase.assertEquals(4 * 12, traceInfoList.size());
+        threadCount++;
+        logger.info("{} size: {}", Thread.currentThread().getName(), traceInfoList.size());
+        TestCase.assertEquals(4 * threadCount, traceInfoList.size());
         Map<String, List<TraceInfo>> map = traceInfoList.stream().collect(Collectors.groupingBy(TraceInfo::getTraceId, Collectors.toList()));
         TestCase.assertEquals(threadCount, map.size());
         for (List<TraceInfo> list : map.values()) {
@@ -81,6 +85,10 @@ public class TraceTest {
             TestCase.assertEquals(0, list.get(1).getExecuteOrder());
             TestCase.assertEquals(1, list.get(2).getExecuteOrder());
             TestCase.assertEquals(0, list.get(3).getExecuteOrder());
+
+            for (TraceInfo info : list) {
+                logger.info("traceInfo: {}-{}, method: {}-{}, cost: {}", info.getThreadName(), info.getTraceId(), info.getTargetClzName(), info.getFullMethodName(), (info.getEnd() - info.getStart()));
+            }
         }
 
         traceInfoList = new ArrayBlockingQueue<>(128);

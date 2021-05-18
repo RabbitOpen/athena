@@ -2,7 +2,7 @@ package rabbit.open.athena.agent.core.interceptor;
 
 import net.bytebuddy.implementation.bind.annotation.*;
 import rabbit.open.athena.agent.core.callback.MorphCallBack;
-import rabbit.open.athena.plugin.common.AthenaPluginDefinition;
+import rabbit.open.athena.plugin.common.PluginDefinition;
 
 import java.lang.reflect.Method;
 
@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
  */
 public class MemberMethodInterceptor extends MethodInterceptor {
 
-    public MemberMethodInterceptor(AthenaPluginDefinition pluginDefinition) {
+    public MemberMethodInterceptor(PluginDefinition pluginDefinition) {
         super(pluginDefinition);
     }
 

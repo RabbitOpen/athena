@@ -7,7 +7,7 @@ import net.bytebuddy.utility.JavaModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rabbit.open.athena.agent.core.transformer.DefaultTransformer;
-import rabbit.open.athena.plugin.common.AthenaPluginDefinition;
+import rabbit.open.athena.plugin.common.PluginDefinition;
 import rabbit.open.athena.plugin.common.context.PluginContext;
 
 import java.lang.instrument.Instrumentation;
@@ -23,11 +23,11 @@ public class AthenaAgent {
     public static void premain(String configFileName, Instrumentation inst) {
         logger.info("athena agent is started!, config file is {}", null == configFileName ? "not specified!" : configFileName);
         PluginContext context = PluginContext.initPluginContext(configFileName);
-        List<AthenaPluginDefinition> enabledPlugins = context.getEnabledPlugins();
+        List<PluginDefinition> enabledPlugins = context.getEnabledPlugins();
         if (enabledPlugins.isEmpty()) {
             return;
         }
-        for (AthenaPluginDefinition plugin : enabledPlugins) {
+        for (PluginDefinition plugin : enabledPlugins) {
             new AgentBuilder.Default().type(plugin.classMatcher().and(context.getExcludesMatcher()))
                 .transform(new DefaultTransformer(plugin))
                 .with(getEmptyListener())
