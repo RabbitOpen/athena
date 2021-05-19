@@ -1,10 +1,10 @@
 package com.org.test.def;
 
 import com.org.test.SimplePluginGroup;
-import com.org.test.agent.SimpleClassEnhancer;
+import com.org.test.agent.SimpleAbstractEnhancer;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
-import rabbit.open.athena.plugin.common.ClassEnhancer;
+import rabbit.open.athena.plugin.common.AbstractEnhancer;
 
 import static net.bytebuddy.matcher.ElementMatchers.named;
 
@@ -20,8 +20,8 @@ public class UserAndRoleStaticMethodDef implements SimplePluginGroup {
     }
 
     @Override
-    public Class<? extends ClassEnhancer> enhancerClass() {
-        return SimpleClassEnhancer.class;
+    public Class<? extends AbstractEnhancer> enhancerClass() {
+        return SimpleAbstractEnhancer.class;
     }
 
     @Override

@@ -26,13 +26,21 @@ public interface PluginDefinition {
     /**
      * 用来增强的class对象
      */
-    Class<? extends ClassEnhancer> enhancerClass();
+    Class<? extends AbstractEnhancer> enhancerClass();
 
     /**
      * 标识被增强的方法是不是静态方法
      * @return
      */
     default boolean isStaticMethod() {
+        return false;
+    }
+
+    /**
+     * 拦截构造函数
+     * @return
+     */
+    default boolean isConstructor() {
         return false;
     }
 }

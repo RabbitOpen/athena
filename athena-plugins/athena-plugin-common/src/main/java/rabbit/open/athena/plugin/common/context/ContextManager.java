@@ -7,7 +7,7 @@ public class ContextManager {
     private static ThreadLocal<TraceInfo> traceInfoContext = new ThreadLocal<>();
 
     // 字节增强上下文
-    private static ThreadLocal<Object> enhanceContext = new ThreadLocal<>();
+    private static ThreadLocal<TraceInfo> enhanceContext = new ThreadLocal<>();
 
     /**
      * 判断是否开启了增强
@@ -21,7 +21,7 @@ public class ContextManager {
      * 开启增强
      * @param context
      */
-    public static void open(Object context) {
+    public static void open(TraceInfo context) {
         if (!isOpen()) {
             enhanceContext.set(context);
         }
@@ -43,11 +43,11 @@ public class ContextManager {
      * 关闭增强
      * @param context
      */
-    public static void close(Object context) {
+    public static void close(TraceInfo context) {
         if (!isOpen()) {
             return;
         }
-        Object openContext = enhanceContext.get();
+        TraceInfo openContext = enhanceContext.get();
         if (openContext == context) {
             enhanceContext.remove();
             traceInfoContext.remove();

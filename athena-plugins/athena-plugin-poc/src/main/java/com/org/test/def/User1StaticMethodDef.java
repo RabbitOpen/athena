@@ -4,7 +4,7 @@ import com.org.test.SimplePluginGroup;
 import com.org.test.agent.AppendStatic;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
-import rabbit.open.athena.plugin.common.ClassEnhancer;
+import rabbit.open.athena.plugin.common.AbstractEnhancer;
 
 import static net.bytebuddy.matcher.ElementMatchers.named;
 
@@ -19,7 +19,7 @@ public class User1StaticMethodDef implements SimplePluginGroup {
     }
 
     @Override
-    public Class<? extends ClassEnhancer> enhancerClass() {
+    public Class<? extends AbstractEnhancer> enhancerClass() {
         return AppendStatic.class;
     }
 

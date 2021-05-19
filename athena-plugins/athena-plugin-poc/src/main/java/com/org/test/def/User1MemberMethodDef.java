@@ -4,7 +4,7 @@ import com.org.test.SimplePluginGroup;
 import com.org.test.agent.AppendHello;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
-import rabbit.open.athena.plugin.common.ClassEnhancer;
+import rabbit.open.athena.plugin.common.AbstractEnhancer;
 
 import static net.bytebuddy.matcher.ElementMatchers.named;
 
@@ -24,7 +24,7 @@ public class User1MemberMethodDef implements SimplePluginGroup {
     }
 
     @Override
-    public Class<? extends ClassEnhancer> enhancerClass() {
+    public Class<? extends AbstractEnhancer> enhancerClass() {
         return AppendHello.class;
     }
 }

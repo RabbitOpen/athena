@@ -2,8 +2,10 @@ agent:
   plugin:
     enabledPlugins:
       - com.org.athena.test.trace.TracePluginDefinition
+      - rabbit.open.athena.plugin.jdk.def.ThreadTracePluginDefinition
     enabledPluginGroups:
       - com.org.athena.test.TracePluginGroup
+      - rabbit.open.athena.plugin.jdk.JDKPluginGroup
 
   # 以下是默认追踪链相关配置
   trace:

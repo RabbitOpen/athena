@@ -1,14 +1,27 @@
 package com.org.athena.test.service;
 
-public class UserService {
 
-    RoleService roleService = new RoleService();
-    HomeService homeService = new HomeService();
+import rabbit.open.athena.client.wrapper.CallableWrapper;
+import rabbit.open.athena.client.wrapper.RunnableWrapper;
 
-    public int doSomething(int age, String name) {
+import java.util.concurrent.*;
 
-        int r1 = roleService.doSomething();
-        int r2 = homeService.doSomething();
-        return 10 + r1 + r2;
+public class UserService extends BaseService {
+
+    // 线程增强测试
+    ThreadPoolExecutor tpe = new ThreadPoolExecutor(3, 3, 10, TimeUnit.MINUTES, new ArrayBlockingQueue<>(100), new RejectedExecutionHandler() {
+        @Override
+        public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+            r.run();
+        }
+    });
+
+
+    public void asyncRun(Runnable task) {
+        tpe.submit(RunnableWrapper.of(task));
+    }
+
+    public void asyncRun(Callable task) {
+        tpe.submit(CallableWrapper.of(task));
     }
 }

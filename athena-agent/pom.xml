@@ -23,6 +23,10 @@
             <artifactId>athena-plugin-poc</artifactId>
         </dependency>
         <dependency>
+            <groupId>rabbit.open.athena</groupId>
+            <artifactId>athena-plugin-jdk</artifactId>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
@@ -60,6 +64,8 @@
                                     <include>net.bytebuddy:byte-buddy-agent:jar:</include>
                                     <include>org.yaml:snakeyaml:jar:</include>
                                     <include>rabbit.open.athena:athena-plugin-common:jar:</include>
+                                    <include>rabbit.open.athena:athena-plugin-jdk:jar:</include>
+                                    <include>rabbit.open.athena:athena-client:jar:</include>
                                 </includes>
                             </artifactSet>
                             <relocations>

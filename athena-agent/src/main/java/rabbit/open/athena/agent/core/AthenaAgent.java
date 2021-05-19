@@ -11,6 +11,7 @@ import rabbit.open.athena.plugin.common.PluginDefinition;
 import rabbit.open.athena.plugin.common.context.PluginContext;
 
 import java.lang.instrument.Instrumentation;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -22,7 +23,7 @@ public class AthenaAgent {
 
     public static void premain(String configFileName, Instrumentation inst) {
         logger.info("athena agent is started!, config file is {}", null == configFileName ? "not specified!" : configFileName);
-        PluginContext context = PluginContext.initPluginContext(configFileName);
+        PluginContext context = PluginContext.initPluginContext(configFileName, Arrays.asList(PluginGroup.DEFAULT_PLUGIN_GROUPS));
         List<PluginDefinition> enabledPlugins = context.getEnabledPlugins();
         if (enabledPlugins.isEmpty()) {
             return;

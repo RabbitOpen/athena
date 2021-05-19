@@ -20,6 +20,7 @@
         <module>athena-sample</module>
         <module>athena-agent</module>
         <module>athena-plugins</module>
+        <module>athena-client</module>
     </modules>
 
 
@@ -30,10 +31,19 @@
                 <artifactId>athena-plugin-common</artifactId>
                 <version>${athena.project.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>rabbit.open.athena</groupId>
                 <artifactId>athena-plugin-poc</artifactId>
+                <version>${athena.project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>rabbit.open.athena</groupId>
+                <artifactId>athena-client</artifactId>
+                <version>${athena.project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>rabbit.open.athena</groupId>
+                <artifactId>athena-plugin-jdk</artifactId>
                 <version>${athena.project.version}</version>
             </dependency>
             <dependency>

@@ -55,7 +55,7 @@ public class PluginContextTest {
     @Test
     public void matcherTest() {
         PluginContext context = PluginContext.initPluginContext("athena-config.yml");
-        String name = PluginContextTest.class.getName();
+        String name = PluginContext.class.getName();
         TypeDescription typeDescription = TypePool.Default.ofSystemLoader().describe(name).resolve();
         TestCase.assertTrue(!context.getExcludesMatcher().matches(typeDescription));
 

@@ -3,23 +3,29 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>athena</artifactId>
+        <artifactId>athena-plugins</artifactId>
         <groupId>rabbit.open.athena</groupId>
         <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>athena-plugins</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>athena-plugin-common</module>
-        <module>athena-plugin-poc</module>
-        <module>athena-plugin-jdk</module>
-    </modules>
+    <artifactId>athena-plugin-jdk</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>rabbit.open.athena</groupId>
+            <artifactId>athena-plugin-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>rabbit.open.athena</groupId>
+            <artifactId>athena-client</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

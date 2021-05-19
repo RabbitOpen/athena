@@ -11,7 +11,6 @@ import rabbit.open.athena.plugin.common.meta.AthenaMetaData;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ServiceLoader;
 
@@ -31,9 +30,7 @@ public class PluginContext implements PluginService {
     private AthenaMetaData metaData;
 
     // 默认插件列组表
-    private static final List<Class<? extends PluginDefinition>> DEFAULT_GROUPS = Arrays.asList(
-
-    );
+    private List<Class<? extends PluginDefinition>> defaultPluginGroups;
 
     private static PluginContext context;
 
@@ -44,7 +41,8 @@ public class PluginContext implements PluginService {
      */
     private static String[] agentIgnorePackages = {
             "athena.net.bytebuddy",
-            "rabbit.open.athena",
+            "rabbit.open.athena.agent",
+            "rabbit.open.athena.plugin",
             "org.yaml.snakeyaml",
     };
 
@@ -65,7 +63,12 @@ public class PluginContext implements PluginService {
      * @return
      */
     public static PluginContext initPluginContext(String athenaConfigFileName) {
+        return initPluginContext(athenaConfigFileName, new ArrayList<>());
+    }
+
+    public static PluginContext initPluginContext(String athenaConfigFileName, List<Class<? extends PluginDefinition>> pluginGroups) {
         PluginContext.context = new PluginContext();
+        context.defaultPluginGroups = pluginGroups;
         String fileName = (null == athenaConfigFileName ? DEFAULT_ATHENA_CONFIG_FILE_NAME : athenaConfigFileName);
         URL resource = PluginContext.class.getResource("/" + fileName);
         if (null == resource) {
@@ -105,8 +108,8 @@ public class PluginContext implements PluginService {
         List<String> pluginGroups = getMetaData().getEnabledPluginGroups();
         List<Class<? extends PluginDefinition>> groupDefinitions;
         if (pluginGroups.isEmpty()) {
-            logger.info("use default plugin groups: {}", DEFAULT_GROUPS);
-            groupDefinitions = DEFAULT_GROUPS;
+            logger.info("use default plugin groups: {}", defaultPluginGroups);
+            groupDefinitions = defaultPluginGroups;
         } else {
             groupDefinitions = getDeclaredPluginGroups();
         }

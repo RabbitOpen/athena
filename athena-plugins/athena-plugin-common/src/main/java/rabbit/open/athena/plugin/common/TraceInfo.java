@@ -36,6 +36,9 @@ public abstract class TraceInfo {
 
     private boolean exceptionOccurred = false;
 
+    // 异常信息
+    private String errMsg;
+
     private Long start;
 
     private Long end;
@@ -146,5 +149,13 @@ public abstract class TraceInfo {
 
     public void setThreadName(String threadName) {
         this.threadName = threadName;
+    }
+
+    public String getErrMsg() {
+        return errMsg;
+    }
+
+    public void setErrMsg(String errMsg) {
+        this.errMsg = errMsg;
     }
 }

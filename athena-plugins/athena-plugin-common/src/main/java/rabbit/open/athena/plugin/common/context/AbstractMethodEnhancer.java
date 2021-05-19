@@ -1,29 +1,27 @@
 package rabbit.open.athena.plugin.common.context;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import rabbit.open.athena.plugin.common.ClassEnhancer;
+import rabbit.open.athena.plugin.common.AbstractEnhancer;
+import rabbit.open.athena.plugin.common.SafeRunner;
 import rabbit.open.athena.plugin.common.TraceInfo;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.UUID;
 
 /**
  * 抽象增强实现，记录trace info信息
  */
-public abstract class MetricClassEnhancer<T extends TraceInfo> implements ClassEnhancer {
-
-    protected Logger logger = LoggerFactory.getLogger(getClass());
+public abstract class AbstractMethodEnhancer<T extends TraceInfo> implements AbstractEnhancer {
 
     @Override
     public final void beforeMethod(Object objectEnhanced, Method targetMethod, Object[] args) {
-        safelyHandle(() -> {
+        SafeRunner.handle(() -> {
             T traceInfo = newTraceInfo();
             traceInfo.setAppName(PluginContext.getContext().getMetaData().getApplicationName());
             traceInfo.setThreadName(Thread.currentThread().getName());
-            traceInfo.setFullMethodName(targetMethod.getName() + "(" + type2Str(targetMethod.getParameterTypes()) +  ")");
+            traceInfo.setFullMethodName(targetMethod.getName() + "(" + type2Str(targetMethod.getParameterTypes()) + ")");
             traceInfo.setMethodName(targetMethod.getName());
-            traceInfo.setTargetClzName(targetMethod.getDeclaringClass().getName());
+            traceInfo.setTargetClzName(Modifier.isStatic(targetMethod.getModifiers()) ? targetMethod.getDeclaringClass().getName() : objectEnhanced.getClass().getName());
             traceInfo.setStart(System.currentTimeMillis());
             if (!ContextManager.isOpen()) {
                 traceInfo.setTraceId(UUID.randomUUID().toString().replace("-", ""));
@@ -45,7 +43,7 @@ public abstract class MetricClassEnhancer<T extends TraceInfo> implements ClassE
 
     @Override
     public final Object afterMethod(Object objectEnhanced, Method targetMethod, Object[] args, Object result) {
-        safelyHandle(() -> {
+        SafeRunner.handle(() -> {
             TraceInfo traceInfo = ContextManager.getTraceInfo();
             try {
                 traceInfo.setEnd(System.currentTimeMillis());
@@ -61,11 +59,12 @@ public abstract class MetricClassEnhancer<T extends TraceInfo> implements ClassE
 
     @Override
     public final void onException(Object objectEnhanced, Method targetMethod, Object[] args, Object result, Throwable t) {
-        safelyHandle(() -> {
+        SafeRunner.handle(() -> {
             TraceInfo traceInfo = ContextManager.getTraceInfo();
             try {
                 traceInfo.setEnd(System.currentTimeMillis());
                 traceInfo.setExceptionOccurred(true);
+                traceInfo.setErrMsg(t.getMessage());
                 onException(objectEnhanced, targetMethod, args, result, t, (T) traceInfo);
                 ContextManager.setTraceInfo(traceInfo.getParent());
                 PluginContext.getContext().getOrInitCollector().doCollection(traceInfo);
@@ -108,26 +107,4 @@ public abstract class MetricClassEnhancer<T extends TraceInfo> implements ClassE
      */
     protected abstract void onException(Object objectEnhanced, Method targetMethod, Object[] args, Object result, Throwable t, T traceInfo);
 
-    /**
-     * 切面错误不能影响正常业务
-     * @param task
-     */
-    protected void safelyHandle(Runnable task) {
-        try {
-            task.run();
-        } catch (Throwable t) {
-            logger.warn(t.getMessage(), t);
-        }
-    }
-
-    protected String type2Str(Class<?>[] types) {
-        String str = "";
-        for (int i = 0; i < types.length; i++) {
-            str += types[i].getName();
-            if (i != types.length - 1) {
-                str += ", ";
-            }
-        }
-        return str;
-    }
 }
