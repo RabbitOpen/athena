@@ -66,7 +66,6 @@ public class PluginContextTest {
         TestCase.assertTrue(ElementMatchers.named(name).and(context.getExcludesMatcher()).matches(typeDescription));
         TestCase.assertTrue(context.getExcludesMatcher().and(ElementMatchers.named(name)).matches(typeDescription));
 
-
     }
 
 }
