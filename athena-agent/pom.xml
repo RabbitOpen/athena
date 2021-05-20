@@ -24,7 +24,11 @@
         </dependency>
         <dependency>
             <groupId>rabbit.open.athena</groupId>
-            <artifactId>athena-plugin-jdk</artifactId>
+            <artifactId>athena-plugin-thread</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>rabbit.open.athena</groupId>
+            <artifactId>athena-plugin-springcloud</artifactId>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -63,9 +67,10 @@
                                     <include>net.bytebuddy:byte-buddy:jar:</include>
                                     <include>net.bytebuddy:byte-buddy-agent:jar:</include>
                                     <include>org.yaml:snakeyaml:jar:</include>
-                                    <include>rabbit.open.athena:athena-plugin-common:jar:</include>
-                                    <include>rabbit.open.athena:athena-plugin-jdk:jar:</include>
                                     <include>rabbit.open.athena:athena-client:jar:</include>
+                                    <include>rabbit.open.athena:athena-plugin-common:jar:</include>
+                                    <include>rabbit.open.athena:athena-plugin-thread:jar:</include>
+                                    <include>rabbit.open.athena:athena-plugin-springcloud:jar:</include>
                                 </includes>
                             </artifactSet>
                             <relocations>

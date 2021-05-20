@@ -43,7 +43,12 @@
             </dependency>
             <dependency>
                 <groupId>rabbit.open.athena</groupId>
-                <artifactId>athena-plugin-jdk</artifactId>
+                <artifactId>athena-plugin-thread</artifactId>
+                <version>${athena.project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>rabbit.open.athena</groupId>
+                <artifactId>athena-plugin-springcloud</artifactId>
                 <version>${athena.project.version}</version>
             </dependency>
             <dependency>

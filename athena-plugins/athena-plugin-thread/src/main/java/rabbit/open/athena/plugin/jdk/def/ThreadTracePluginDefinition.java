@@ -3,7 +3,7 @@ package rabbit.open.athena.plugin.jdk.def;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 import rabbit.open.athena.plugin.common.AbstractEnhancer;
-import rabbit.open.athena.plugin.jdk.JDKPluginGroup;
+import rabbit.open.athena.plugin.jdk.ThreadTracePluginGroup;
 import rabbit.open.athena.plugin.jdk.enhancer.ThreadTraceAbstractEnhancer;
 
 import static net.bytebuddy.matcher.ElementMatchers.named;
@@ -11,7 +11,7 @@ import static net.bytebuddy.matcher.ElementMatchers.named;
 /**
  * runnable/callable执行时的拦截定义
  */
-public class ThreadTracePluginDefinition implements JDKPluginGroup {
+public class ThreadTracePluginDefinition implements ThreadTracePluginGroup {
 
     @Override
     public ElementMatcher.Junction<TypeDescription> classMatcher() {
