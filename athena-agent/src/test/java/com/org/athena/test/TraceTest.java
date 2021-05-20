@@ -13,9 +13,9 @@ import org.junit.runners.JUnit4;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rabbit.open.athena.agent.core.AthenaAgent;
+import rabbit.open.athena.client.trace.TraceInfo;
 import rabbit.open.athena.client.wrapper.CallableWrapper;
 import rabbit.open.athena.client.wrapper.RunnableWrapper;
-import rabbit.open.athena.plugin.common.TraceInfo;
 import rabbit.open.athena.plugin.common.TraceInfoCollector;
 import rabbit.open.athena.plugin.common.context.PluginContext;
 

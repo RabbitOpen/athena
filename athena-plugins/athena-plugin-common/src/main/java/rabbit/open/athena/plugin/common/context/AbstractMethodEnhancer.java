@@ -1,11 +1,13 @@
 package rabbit.open.athena.plugin.common.context;
 
+import rabbit.open.athena.client.trace.TraceInfo;
 import rabbit.open.athena.plugin.common.AbstractEnhancer;
 import rabbit.open.athena.plugin.common.SafeRunner;
-import rabbit.open.athena.plugin.common.TraceInfo;
+import rabbit.open.athena.plugin.common.exception.AthenaException;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
 import java.util.UUID;
 
 /**
@@ -13,10 +15,20 @@ import java.util.UUID;
  */
 public abstract class AbstractMethodEnhancer<T extends TraceInfo> implements AbstractEnhancer {
 
+    protected Class<T> clz;
+
+    public AbstractMethodEnhancer() {
+        Class<?> cls = getClass();
+        while (!(cls.getGenericSuperclass() instanceof ParameterizedType)) {
+            cls = cls.getSuperclass();
+        }
+        clz = (Class<T>) ((ParameterizedType) (cls.getGenericSuperclass())).getActualTypeArguments()[0];
+    }
+
     @Override
     public final void beforeMethod(Object objectEnhanced, Method targetMethod, Object[] args) {
         SafeRunner.handle(() -> {
-            T traceInfo = newTraceInfo();
+            T traceInfo = initTraceInfo();
             traceInfo.setAppName(PluginContext.getContext().getMetaData().getApplicationName());
             traceInfo.setThreadName(Thread.currentThread().getName());
             traceInfo.setFullMethodName(targetMethod.getName() + "(" + type2Str(targetMethod.getParameterTypes()) + ")");
@@ -78,7 +90,13 @@ public abstract class AbstractMethodEnhancer<T extends TraceInfo> implements Abs
      * 新建一个trace info
      * @return
      */
-    protected abstract T newTraceInfo();
+    protected T initTraceInfo() {
+        try {
+            return clz.newInstance();
+        } catch (Exception e) {
+            throw new AthenaException(e);
+        }
+    };
 
     /**
      * 增强前置处理

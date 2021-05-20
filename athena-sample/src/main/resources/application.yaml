@@ -1,0 +1,12 @@
+server:
+  port: 8868
+
+
+spring:
+  application:
+    name: athena-sample
+  profiles:
+    active: dev
+  cloud:
+    zookeeper:
+      connect-string: 127.0.0.1:2181

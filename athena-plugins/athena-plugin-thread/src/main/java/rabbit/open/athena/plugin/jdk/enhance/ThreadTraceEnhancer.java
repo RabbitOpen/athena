@@ -1,16 +1,16 @@
-package rabbit.open.athena.plugin.jdk.enhancer;
+package rabbit.open.athena.plugin.jdk.enhance;
 
+import rabbit.open.athena.client.trace.TraceInfo;
 import rabbit.open.athena.client.wrapper.AbstractWrapper;
 import rabbit.open.athena.client.wrapper.RunnableWrapper;
 import rabbit.open.athena.plugin.common.AbstractEnhancer;
 import rabbit.open.athena.plugin.common.SafeRunner;
-import rabbit.open.athena.plugin.common.TraceInfo;
 import rabbit.open.athena.plugin.common.context.ContextManager;
 import rabbit.open.athena.plugin.common.context.PluginContext;
 
 import java.lang.reflect.Method;
 
-public class ThreadTraceAbstractEnhancer implements AbstractEnhancer {
+public class ThreadTraceEnhancer implements AbstractEnhancer {
 
     @Override
     public void beforeMethod(Object objectEnhanced, Method targetMethod, Object[] args) {

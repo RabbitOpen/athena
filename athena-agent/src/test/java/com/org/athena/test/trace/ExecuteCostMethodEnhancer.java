@@ -10,11 +10,6 @@ import java.lang.reflect.Method;
 public class ExecuteCostMethodEnhancer extends AbstractMethodEnhancer<ExecuteCostTraceInfo> {
 
     @Override
-    protected ExecuteCostTraceInfo newTraceInfo() {
-        return new ExecuteCostTraceInfo();
-    }
-
-    @Override
     protected void beforeMethod(Object objectEnhanced, Method targetMethod, Object[] args, ExecuteCostTraceInfo traceInfo) {
     }
 

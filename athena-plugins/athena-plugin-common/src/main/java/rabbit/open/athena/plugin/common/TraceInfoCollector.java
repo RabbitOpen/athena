@@ -1,5 +1,7 @@
 package rabbit.open.athena.plugin.common;
 
+import rabbit.open.athena.client.trace.TraceInfo;
+
 import java.util.List;
 
 public interface TraceInfoCollector {

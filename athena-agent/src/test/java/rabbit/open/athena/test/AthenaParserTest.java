@@ -18,10 +18,10 @@ public class AthenaParserTest {
 
     @Test
     public void parseTest() {
-        AthenaMetaData metaData = AthenaMetaData.readBy("athena-config.yml");
+        AthenaMetaData metaData = AthenaMetaData.initByFile("athena-config.yml");
         logger.info("config: {}", metaData);
         TestCase.assertEquals(2, metaData.getEnabledPlugins().size());
-        metaData = AthenaMetaData.readBy("empty.yml");
+        metaData = AthenaMetaData.initByFile("empty.yml");
         TestCase.assertEquals(0, metaData.getEnabledPlugins().size());
     }
 

@@ -22,10 +22,6 @@
             <groupId>rabbit.open.athena</groupId>
             <artifactId>athena-plugin-common</artifactId>
         </dependency>
-        <dependency>
-            <groupId>rabbit.open.athena</groupId>
-            <artifactId>athena-client</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

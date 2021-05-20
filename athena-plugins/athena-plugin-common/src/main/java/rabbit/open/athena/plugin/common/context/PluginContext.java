@@ -70,14 +70,21 @@ public class PluginContext implements PluginService {
         PluginContext.context = new PluginContext();
         context.defaultPluginGroups = pluginGroups;
         String fileName = (null == athenaConfigFileName ? DEFAULT_ATHENA_CONFIG_FILE_NAME : athenaConfigFileName);
-        URL resource = PluginContext.class.getResource("/" + fileName);
+        if (!fileName.startsWith("/")) {
+            fileName = "/" + fileName;
+        }
+        URL resource = PluginContext.class.getResource(fileName);
         if (null == resource) {
             context.metaData = new AthenaMetaData();
             logger.info("config file[{}] is not existed!", fileName);
         } else {
-            context.metaData = AthenaMetaData.readBy(fileName);
+            context.metaData = AthenaMetaData.initByFile(fileName);
             logger.info("load config from file[{}] : {}", fileName, context.metaData);
         }
+        context.metaData.completeEmptyFieldByFile("/bootstrap.yml");
+        context.metaData.completeEmptyFieldByFile("/bootstrap.yaml");
+        context.metaData.completeEmptyFieldByFile("/application.yml");
+        context.metaData.completeEmptyFieldByFile("/application.yaml");
         context.loadPlugins();
         context.getOrInitCollector();
         return context;

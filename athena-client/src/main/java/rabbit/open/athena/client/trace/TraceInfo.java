@@ -1,4 +1,4 @@
-package rabbit.open.athena.plugin.common;
+package rabbit.open.athena.client.trace;
 
 /**
  * 跟踪信息

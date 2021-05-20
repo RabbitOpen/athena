@@ -1,10 +1,11 @@
 package rabbit.open.athena.plugin.common.meta;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
+import rabbit.open.athena.plugin.common.exception.AthenaException;
 import rabbit.open.athena.plugin.common.trace.MemoryTraceCollector;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,8 +17,6 @@ import java.util.Map;
  */
 public class AthenaMetaData {
 
-    Logger logger = LoggerFactory.getLogger(getClass());
-
     // 应用端配置的有效插件
     @Property("agent.plugin.enabledPlugins")
     private List<String> enabledPlugins = new ArrayList<>();
@@ -27,8 +26,8 @@ public class AthenaMetaData {
     private List<String> enabledPluginGroups = new ArrayList<>();
 
     // 接入应用名
-    @Property("agent.application.name")
-    private String applicationName = "app";
+    @Property("spring.application.name")
+    private String applicationName;
 
     // 收集器名字
     @Property("agent.trace.collector.clzName")
@@ -56,16 +55,54 @@ public class AthenaMetaData {
 
     /**
      * 根据配置文件解析配置数据
-     * @param yml
+     * @param ymlFile
      * @return
      */
-    public static AthenaMetaData readBy(String yml) {
+    public static AthenaMetaData initByFile(String ymlFile) {
+        if (!ymlFile.startsWith("/")) {
+            ymlFile = "/" + ymlFile;
+        }
         Yaml yaml = new Yaml();
-        Iterable<Object> all = yaml.loadAll(AthenaMetaData.class.getResourceAsStream("/" + yml));
-        if (!all.iterator().hasNext()) {
+        InputStream stream = AthenaMetaData.class.getResourceAsStream(ymlFile);
+        if (null == stream) {
             return new AthenaMetaData();
         }
-        return convert((Map<String, Object>) all.iterator().next());
+        Iterable<Object> all = yaml.loadAll(stream);
+        if (!all.iterator().hasNext()) {
+            close(stream);
+            return new AthenaMetaData();
+        }
+        AthenaMetaData data = convert((Map<String, Object>) all.iterator().next());
+        close(stream);
+        return data;
+    }
+
+    private static void close(InputStream stream) {
+        try {
+            stream.close();
+        } catch (IOException e) {
+            throw new AthenaException(e);
+        }
+    }
+
+    /**
+     * 读取｛ymlFile｝中的值来填充当前对象中的空字段。
+     * @param ymlFile
+     */
+    public void completeEmptyFieldByFile(String ymlFile) {
+        AthenaMetaData data = initByFile(ymlFile);
+        for (Field field : getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+            try {
+                Object value = field.get(this);
+                if (null != value) {
+                    continue;
+                }
+                field.set(this, field.get(data));
+            } catch (Exception e) {
+                throw new AthenaException(e);
+            }
+        }
     }
 
     private static AthenaMetaData convert(Map<String, Object> config) {
@@ -75,10 +112,10 @@ public class AthenaMetaData {
             Map<String, Object> target = config;
             for (int i = 0; i < entry.getValue().size(); i++) {
                 String nodeName = entry.getValue().get(i);
-                Object value = target.get(nodeName);
-                if (!target.containsKey(nodeName)) {
+                if (null == target || !target.containsKey(nodeName)) {
                     continue;
                 }
+                Object value = target.get(nodeName);
                 if (i == entry.getValue().size() - 1) {
                     Field field = entry.getKey();
                     field.setAccessible(true);

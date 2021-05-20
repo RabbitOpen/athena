@@ -4,7 +4,7 @@ import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
 import rabbit.open.athena.plugin.common.AbstractEnhancer;
 import rabbit.open.athena.plugin.jdk.ThreadTracePluginGroup;
-import rabbit.open.athena.plugin.jdk.enhancer.ThreadTraceAbstractEnhancer;
+import rabbit.open.athena.plugin.jdk.enhance.ThreadTraceEnhancer;
 
 import static net.bytebuddy.matcher.ElementMatchers.named;
 
@@ -21,7 +21,7 @@ public class ThreadTracePluginDefinition implements ThreadTracePluginGroup {
 
     @Override
     public Class<? extends AbstractEnhancer> enhancerClass() {
-        return ThreadTraceAbstractEnhancer.class;
+        return ThreadTraceEnhancer.class;
     }
 
     @Override

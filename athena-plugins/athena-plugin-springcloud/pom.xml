@@ -21,6 +21,11 @@
             <groupId>rabbit.open.athena</groupId>
             <artifactId>athena-plugin-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 </project>
