@@ -4,17 +4,24 @@ import com.org.test.bean.User;
 import com.org.test.bean.User1;
 import junit.framework.TestCase;
 import net.bytebuddy.agent.ByteBuddyAgent;
+import net.bytebuddy.description.annotation.AnnotationSource;
 import net.bytebuddy.description.type.TypeDescription;
+import net.bytebuddy.matcher.ElementMatcher;
 import net.bytebuddy.matcher.ElementMatchers;
 import net.bytebuddy.pool.TypePool;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import rabbit.open.athena.agent.core.AthenaAgent;
+import rabbit.open.athena.agent.core.PluginGroup;
+import rabbit.open.athena.client.Traceable;
 import rabbit.open.athena.plugin.common.PluginDefinition;
 import rabbit.open.athena.plugin.common.context.PluginContext;
 
 import java.util.List;
+
+import static net.bytebuddy.matcher.ElementMatchers.declaresMethod;
+import static net.bytebuddy.matcher.ElementMatchers.isAnnotatedWith;
 
 @RunWith(JUnit4.class)
 public class PluginContextTest {
@@ -67,5 +74,25 @@ public class PluginContextTest {
         TestCase.assertTrue(context.getExcludesMatcher().and(ElementMatchers.named(name)).matches(typeDescription));
 
     }
+
+    @Test
+    public void annotationMatcherTest() {
+        ElementMatcher.Junction<AnnotationSource> junction = isAnnotatedWith(Traceable.class);
+        TestCase.assertTrue(!junction.matches(typeDescriptionOf(TestBean1.class)));
+        TestCase.assertTrue(!junction.matches(typeDescriptionOf(PluginGroup.class)));
+        TestCase.assertTrue(declaresMethod(isAnnotatedWith(Traceable.class))
+                .matches(typeDescriptionOf(TestBean1.class)));
+    }
+
+    private static TypeDescription typeDescriptionOf(Class<?> beanClass) {
+        return TypePool.Default.ofSystemLoader().describe(beanClass.getName()).resolve();
+    }
+
+    public static class TestBean1 {
+
+        @Traceable
+        public void doSomething() {}
+    }
+
 
 }

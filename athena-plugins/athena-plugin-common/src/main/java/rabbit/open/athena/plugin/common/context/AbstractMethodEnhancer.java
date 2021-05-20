@@ -32,7 +32,7 @@ public abstract class AbstractMethodEnhancer<T extends TraceInfo> implements Abs
             traceInfo.setAppName(PluginContext.getContext().getMetaData().getApplicationName());
             traceInfo.setThreadName(Thread.currentThread().getName());
             traceInfo.setFullMethodName(targetMethod.getName() + "(" + type2Str(targetMethod.getParameterTypes()) + ")");
-            traceInfo.setMethodName(targetMethod.getName());
+            traceInfo.setName(targetMethod.getName());
             traceInfo.setTargetClzName(Modifier.isStatic(targetMethod.getModifiers()) ? targetMethod.getDeclaringClass().getName() : objectEnhanced.getClass().getName());
             traceInfo.setStart(System.currentTimeMillis());
             if (!ContextManager.isOpen()) {

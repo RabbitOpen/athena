@@ -53,6 +53,11 @@
                 <version>${athena.project.version}</version>
             </dependency>
             <dependency>
+                <groupId>rabbit.open.athena</groupId>
+                <artifactId>athena-plugin-customize</artifactId>
+                <version>${athena.project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-openfeign</artifactId>
                 <version>${spring.cloud.version}</version>

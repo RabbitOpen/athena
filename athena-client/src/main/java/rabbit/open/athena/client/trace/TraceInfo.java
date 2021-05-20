@@ -3,7 +3,7 @@ package rabbit.open.athena.client.trace;
 /**
  * 跟踪信息
  */
-public abstract class TraceInfo {
+public class TraceInfo {
 
     private String traceId;
 
@@ -13,8 +13,8 @@ public abstract class TraceInfo {
 
     private String targetClzName;
 
-    // 函数名
-    private String methodName;
+    // 操作名
+    private String name;
 
     // 函数名（带参数类型）
     private String fullMethodName;
@@ -127,12 +127,12 @@ public abstract class TraceInfo {
         this.targetClzName = targetClzName;
     }
 
-    public String getMethodName() {
-        return methodName;
+    public String getName() {
+        return name;
     }
 
-    public void setMethodName(String methodName) {
-        this.methodName = methodName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getFullMethodName() {

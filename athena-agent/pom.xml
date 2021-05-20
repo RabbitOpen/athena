@@ -28,6 +28,10 @@
         </dependency>
         <dependency>
             <groupId>rabbit.open.athena</groupId>
+            <artifactId>athena-plugin-customize</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>rabbit.open.athena</groupId>
             <artifactId>athena-plugin-springcloud</artifactId>
         </dependency>
         <dependency>
@@ -71,6 +75,7 @@
                                     <include>rabbit.open.athena:athena-plugin-common:jar:</include>
                                     <include>rabbit.open.athena:athena-plugin-thread:jar:</include>
                                     <include>rabbit.open.athena:athena-plugin-springcloud:jar:</include>
+                                    <include>rabbit.open.athena:athena-plugin-customize:jar:</include>
                                 </includes>
                             </artifactSet>
                             <relocations>

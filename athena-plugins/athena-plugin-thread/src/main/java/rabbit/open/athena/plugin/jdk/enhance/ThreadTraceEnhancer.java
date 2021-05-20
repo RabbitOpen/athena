@@ -41,7 +41,7 @@ public class ThreadTraceEnhancer implements AbstractEnhancer {
             traceInfo.setThreadName(Thread.currentThread().getName());
             String methodName = wrapper instanceof RunnableWrapper ? "run" : "call";
             traceInfo.setFullMethodName(methodName);
-            traceInfo.setMethodName(methodName);
+            traceInfo.setName(methodName);
             traceInfo.setTargetClzName(objectEnhanced.getClass().getName());
             traceInfo.setStart(System.currentTimeMillis());
             if (opened) {
