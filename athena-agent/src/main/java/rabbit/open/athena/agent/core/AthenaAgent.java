@@ -29,7 +29,7 @@ public class AthenaAgent {
             return;
         }
         for (PluginDefinition plugin : enabledPlugins) {
-            new AgentBuilder.Default().type(plugin.classMatcher().and(context.getExcludesMatcher()))
+            new AgentBuilder.Default().type(context.getExcludesMatcher().and(plugin.classMatcher()))
                 .transform(new DefaultTransformer(plugin))
                 .with(getEmptyListener())
                 .installOn(inst);

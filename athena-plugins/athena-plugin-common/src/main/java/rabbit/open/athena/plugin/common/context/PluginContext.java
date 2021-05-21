@@ -41,9 +41,9 @@ public class PluginContext implements PluginService {
      */
     private static String[] agentIgnorePackages = {
             "athena.net.bytebuddy",
+            "athena.org.yaml.snakeyaml",
             "rabbit.open.athena.agent",
             "rabbit.open.athena.plugin",
-            "org.yaml.snakeyaml",
     };
 
     /**
