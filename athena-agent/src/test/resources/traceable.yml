@@ -1,4 +1,10 @@
 agent:
+  plugin:
+    enabledPlugins:
+      - rabbit.open.athena.plugin.customize.def.MemberFunctionTracePluginDefinition
+      - rabbit.open.athena.plugin.customize.def.StaticFunctionTracePluginDefinition
+    enabledPluginGroups:
+      - rabbit.open.athena.plugin.customize.CustomizePluginGroup
   trace:
     collector:
       server:

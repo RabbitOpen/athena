@@ -12,8 +12,6 @@ import net.bytebuddy.pool.TypePool;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import rabbit.open.athena.agent.core.AthenaAgent;
 import rabbit.open.athena.client.Traceable;
 import rabbit.open.athena.client.trace.TraceInfo;
@@ -32,7 +30,6 @@ import java.util.stream.Collectors;
 @RunWith(JUnit4.class)
 public class TraceTest {
 
-    Logger logger = LoggerFactory.getLogger(getClass());
 
     Semaphore semaphore;
 

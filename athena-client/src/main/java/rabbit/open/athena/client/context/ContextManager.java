@@ -1,4 +1,4 @@
-package rabbit.open.athena.plugin.common.context;
+package rabbit.open.athena.client.context;
 
 import rabbit.open.athena.client.trace.TraceInfo;
 

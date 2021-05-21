@@ -1,11 +1,11 @@
 package rabbit.open.athena.plugin.jdk.enhance;
 
+import rabbit.open.athena.client.context.ContextManager;
 import rabbit.open.athena.client.trace.TraceInfo;
 import rabbit.open.athena.client.wrapper.AbstractWrapper;
 import rabbit.open.athena.client.wrapper.RunnableWrapper;
 import rabbit.open.athena.plugin.common.AbstractEnhancer;
 import rabbit.open.athena.plugin.common.SafeRunner;
-import rabbit.open.athena.plugin.common.context.ContextManager;
 import rabbit.open.athena.plugin.common.context.PluginContext;
 
 import java.lang.reflect.Method;

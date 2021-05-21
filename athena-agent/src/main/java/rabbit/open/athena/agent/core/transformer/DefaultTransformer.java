@@ -31,8 +31,7 @@ public class DefaultTransformer implements AgentBuilder.Transformer {
         if (!plugin.classMatcher().matches(typeDescription)) {
             return builder;
         }
-        logger.info("enhance: {}", typeDescription.getName());
-
+//        logger.info("enhance: {}", typeDescription.getName());
         if (plugin.isConstructor()) {
             return builder.constructor(plugin.methodMatcher())
                     .intercept(SuperMethodCall.INSTANCE.andThen(
