@@ -8,8 +8,6 @@ import net.bytebuddy.implementation.SuperMethodCall;
 import net.bytebuddy.implementation.bind.annotation.Morph;
 import net.bytebuddy.matcher.ElementMatchers;
 import net.bytebuddy.utility.JavaModule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import rabbit.open.athena.agent.core.callback.MorphCallBack;
 import rabbit.open.athena.agent.core.interceptor.ConstructorInterceptor;
 import rabbit.open.athena.agent.core.interceptor.MemberMethodInterceptor;
@@ -17,8 +15,6 @@ import rabbit.open.athena.agent.core.interceptor.StaticMethodInterceptor;
 import rabbit.open.athena.plugin.common.PluginDefinition;
 
 public class DefaultTransformer implements AgentBuilder.Transformer {
-
-    protected Logger logger = LoggerFactory.getLogger(getClass());
 
     private PluginDefinition plugin;
 
@@ -31,7 +27,6 @@ public class DefaultTransformer implements AgentBuilder.Transformer {
         if (!plugin.classMatcher().matches(typeDescription)) {
             return builder;
         }
-//        logger.info("enhance: {}", typeDescription.getName());
         if (plugin.isConstructor()) {
             return builder.constructor(plugin.methodMatcher())
                     .intercept(SuperMethodCall.INSTANCE.andThen(
