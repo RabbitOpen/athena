@@ -16,13 +16,4 @@ public class TraceableMethodEnhancer extends AbstractMethodEnhancer<TraceInfo> {
         }
     }
 
-    @Override
-    protected void afterMethod(Object objectEnhanced, Method targetMethod, Object[] args, Object result, TraceInfo traceInfo) {
-
-    }
-
-    @Override
-    protected void onException(Object objectEnhanced, Method targetMethod, Object[] args, Object result, Throwable t, TraceInfo traceInfo) {
-
-    }
 }

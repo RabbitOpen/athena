@@ -51,7 +51,6 @@ public class ThreadTraceEnhancer implements AbstractEnhancer {
                 traceInfo.setExecuteOrder(0);
             }
             ContextManager.open(traceInfo);
-            ContextManager.setTraceInfo(traceInfo);
         }));
     }
 

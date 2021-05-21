@@ -11,6 +11,9 @@ public class SpringCloudTraceInfo extends TraceInfo {
     // 目标服务
     private String remoteService;
 
+    // 当前主机
+    private String host;
+
     public String getRequestURL() {
         return requestURL;
     }
@@ -33,5 +36,13 @@ public class SpringCloudTraceInfo extends TraceInfo {
 
     public void setRemoteService(String remoteService) {
         this.remoteService = remoteService;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
     }
 }

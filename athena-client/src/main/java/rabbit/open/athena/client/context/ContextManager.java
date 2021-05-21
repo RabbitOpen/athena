@@ -24,6 +24,7 @@ public class ContextManager {
     public static void open(TraceInfo context) {
         if (!isOpen()) {
             enhanceContext.set(context);
+            setTraceInfo(context);
         }
     }
 

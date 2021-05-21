@@ -64,7 +64,6 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <finalName>athenaAgent-${project.version}</finalName>
                             <artifactSet>
                                 <includes>
                                     <!-- 设置需要一起package的包 -->

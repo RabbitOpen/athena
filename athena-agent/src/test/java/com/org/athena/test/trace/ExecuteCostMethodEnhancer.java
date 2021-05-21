@@ -13,11 +13,4 @@ public class ExecuteCostMethodEnhancer extends AbstractMethodEnhancer<ExecuteCos
     protected void beforeMethod(Object objectEnhanced, Method targetMethod, Object[] args, ExecuteCostTraceInfo traceInfo) {
     }
 
-    @Override
-    protected void afterMethod(Object objectEnhanced, Method targetMethod, Object[] args, Object result, ExecuteCostTraceInfo traceInfo) {
-    }
-
-    @Override
-    protected void onException(Object objectEnhanced, Method targetMethod, Object[] args, Object result, Throwable t, ExecuteCostTraceInfo traceInfo) {
-    }
 }

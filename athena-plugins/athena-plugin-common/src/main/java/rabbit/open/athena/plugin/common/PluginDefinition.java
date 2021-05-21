@@ -43,4 +43,5 @@ public interface PluginDefinition {
     default boolean isConstructor() {
         return false;
     }
+
 }

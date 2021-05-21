@@ -1,1 +1,3 @@
 rabbit.open.athena.plugin.springcloud.def.OpenFeignClientPluginDefinition
+rabbit.open.athena.plugin.springcloud.def.ControllerPluginDefinition
+rabbit.open.athena.plugin.springcloud.def.ServletDispatcherPluginDefinition
