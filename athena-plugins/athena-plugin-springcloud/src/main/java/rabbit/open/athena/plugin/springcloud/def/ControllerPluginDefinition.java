@@ -2,11 +2,6 @@ package rabbit.open.athena.plugin.springcloud.def;
 
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.matcher.ElementMatcher;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import rabbit.open.athena.plugin.common.AbstractEnhancer;
 import rabbit.open.athena.plugin.springcloud.SpringCloudPluginGroup;
 import rabbit.open.athena.plugin.springcloud.enhance.ControllerEnhancer;
@@ -20,8 +15,8 @@ public class ControllerPluginDefinition implements SpringCloudPluginGroup {
 
     @Override
     public ElementMatcher.Junction<TypeDescription> classMatcher() {
-        return isAnnotatedWith(RestController.class)
-                .or(isAnnotatedWith(Controller.class))
+        return isAnnotatedWith(named("org.springframework.stereotype.Controller"))
+                .or(isAnnotatedWith(named("org.springframework.web.bind.annotation.RestController")))
                 .and(not(isInterface()))
                 .and(not(isAbstract()));
     }
@@ -33,8 +28,9 @@ public class ControllerPluginDefinition implements SpringCloudPluginGroup {
 
     @Override
     public ElementMatcher.Junction methodMatcher() {
-        return isAnnotatedWith(PostMapping.class).or(isAnnotatedWith(GetMapping.class))
-                .or(isAnnotatedWith(RequestMapping.class))
+        return isAnnotatedWith(named("org.springframework.web.bind.annotation.PostMapping"))
+                .or(isAnnotatedWith(named("org.springframework.web.bind.annotation.GetMapping")))
+                .or(isAnnotatedWith(named("org.springframework.web.bind.annotation.RequestMapping")))
                 .and(isPublic()).and(not(isAbstract()));
     }
 

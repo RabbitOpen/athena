@@ -46,14 +46,14 @@
                 <artifactId>logback-classic</artifactId>
                 <version>1.2.3</version>
             </dependency>
-            <dependency>
+           <!-- <dependency>
                 <groupId>rabbit.open.athena</groupId>
                 <artifactId>athena-plugin-poc</artifactId>
                 <version>1.0.0</version>
-            </dependency>
+            </dependency>-->
             <dependency>
                 <groupId>rabbit.open.athena</groupId>
-                <artifactId>athena-agent</artifactId>
+                <artifactId>athena-client</artifactId>
                 <version>1.0.0</version>
             </dependency>
 
@@ -78,12 +78,20 @@
         </dependency>
         <dependency>
             <groupId>rabbit.open.athena</groupId>
+            <artifactId>athena-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <!--<dependency>
+            <groupId>rabbit.open.athena</groupId>
             <artifactId>athena-plugin-poc</artifactId>
         </dependency>
         <dependency>
             <groupId>rabbit.open.athena</groupId>
             <artifactId>athena-agent</artifactId>
-        </dependency>
+        </dependency>-->
 
         <!--zk-->
         <dependency>
