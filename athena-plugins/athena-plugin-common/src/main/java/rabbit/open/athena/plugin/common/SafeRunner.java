@@ -9,11 +9,15 @@ public class SafeRunner {
 
     private SafeRunner() {};
 
-    public static void handle(Runnable task) {
+    public static void handle(Invoke task) {
         try {
             task.run();
         } catch (Throwable t) {
             logger.error(t.getMessage(), t);
         }
+    }
+
+    public interface Invoke {
+        void run() throws Exception;
     }
 }

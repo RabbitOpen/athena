@@ -9,8 +9,11 @@ import org.slf4j.LoggerFactory;
 import rabbit.open.athena.agent.core.transformer.DefaultTransformer;
 import rabbit.open.athena.plugin.common.PluginDefinition;
 import rabbit.open.athena.plugin.common.context.PluginContext;
+import rabbit.open.athena.plugin.common.exception.AthenaException;
 
+import java.io.File;
 import java.lang.instrument.Instrumentation;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,7 +26,7 @@ public class AthenaAgent {
 
     public static void premain(String configFileName, Instrumentation inst) {
         logger.info("athena agent is started!, config file is {}", null == configFileName ? "not specified!" : configFileName);
-        PluginContext context = PluginContext.initPluginContext(configFileName, Arrays.asList(PluginGroup.DEFAULT_PLUGIN_GROUPS));
+        PluginContext context = PluginContext.initPluginContext(configFileName, getAgentFileDirectory(), Arrays.asList(PluginGroup.DEFAULT_PLUGIN_GROUPS));
         List<PluginDefinition> enabledPlugins = context.getEnabledPlugins();
         if (enabledPlugins.isEmpty()) {
             return;
@@ -35,6 +38,36 @@ public class AthenaAgent {
                 .installOn(inst);
         }
 
+    }
+
+    /**
+     * 获取agent file 所在文件目录
+     * @return
+     */
+    private static String getAgentFileDirectory() {
+        String classResourcePath = AthenaAgent.class.getName().replaceAll("\\.", "/") + ".class";
+        String url = ClassLoader.getSystemClassLoader().getResource(classResourcePath).toString();
+        int insidePathIndex = url.indexOf('!');
+        boolean isInJar = insidePathIndex > -1;
+        if (isInJar) {
+            url = url.substring(url.indexOf("file:"), insidePathIndex);
+            File agentJarFile;
+            try {
+                agentJarFile = new File(new URL(url).toURI());
+            } catch (Exception e) {
+                throw new AthenaException(e);
+            }
+            if (null != agentJarFile && agentJarFile.exists()) {
+                return agentJarFile.getParentFile().getPath();
+            } else {
+                throw new AthenaException(String.format("agent file[%s] is not found!", url));
+            }
+        } else {
+            int prefixLength = "file:".length();
+            String classLocation = url.substring(
+                    prefixLength, url.length() - classResourcePath.length());
+            return new File(classLocation).getPath();
+        }
     }
 
     private static AgentBuilder.Listener getEmptyListener() {

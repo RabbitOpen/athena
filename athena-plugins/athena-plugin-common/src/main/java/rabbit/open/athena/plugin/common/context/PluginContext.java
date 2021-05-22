@@ -7,8 +7,12 @@ import org.slf4j.LoggerFactory;
 import rabbit.open.athena.plugin.common.PluginDefinition;
 import rabbit.open.athena.plugin.common.PluginService;
 import rabbit.open.athena.plugin.common.TraceInfoCollector;
+import rabbit.open.athena.plugin.common.exception.AthenaException;
 import rabbit.open.athena.plugin.common.meta.AthenaMetaData;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,10 +67,10 @@ public class PluginContext implements PluginService {
      * @return
      */
     public static PluginContext initPluginContext(String athenaConfigFileName) {
-        return initPluginContext(athenaConfigFileName, new ArrayList<>());
+        return initPluginContext(athenaConfigFileName, null, new ArrayList<>());
     }
 
-    public static PluginContext initPluginContext(String athenaConfigFileName, List<Class<? extends PluginDefinition>> pluginGroups) {
+    public static PluginContext initPluginContext(String athenaConfigFileName, String agentFileDirectory, List<Class<? extends PluginDefinition>> pluginGroups) {
         PluginContext.context = new PluginContext();
         context.defaultPluginGroups = pluginGroups;
         String fileName = (null == athenaConfigFileName ? DEFAULT_ATHENA_CONFIG_FILE_NAME : athenaConfigFileName);
@@ -79,7 +83,18 @@ public class PluginContext implements PluginService {
             logger.info("config file[{}] is not existed!", fileName);
         } else {
             context.metaData = AthenaMetaData.initByFile(fileName);
-            logger.info("load config from file[{}] : {}", fileName, context.metaData);
+            logger.info("load config from file[{}]", fileName);
+        }
+        File file = new File(agentFileDirectory + "/config/agent.yml");
+        if (file.exists()) {
+            context.metaData.completeEmptyFieldByMetaData(AthenaMetaData.initByFile(file.getPath(),
+                    name -> {
+                        try {
+                            return new FileInputStream(name);
+                        } catch (FileNotFoundException e) {
+                            throw new AthenaException(e);
+                        }
+                    }));
         }
         context.metaData.completeEmptyFieldByFile("/bootstrap.yml");
         context.metaData.completeEmptyFieldByFile("/bootstrap.yaml");
@@ -87,6 +102,7 @@ public class PluginContext implements PluginService {
         context.metaData.completeEmptyFieldByFile("/application.yaml");
         context.loadPlugins();
         context.getOrInitCollector();
+        logger.info("meta data: {}", context.metaData);
         return context;
     }
 

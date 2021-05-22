@@ -106,7 +106,7 @@ public abstract class AbstractMethodEnhancer<T extends TraceInfo> implements Abs
      * @param args
      * @param traceInfo
      */
-    protected void beforeMethod(Object objectEnhanced, Method targetMethod, Object[] args, T traceInfo) {}
+    protected void beforeMethod(Object objectEnhanced, Method targetMethod, Object[] args, T traceInfo) throws Exception {}
 
     /**
      * 增强后置处理
@@ -115,7 +115,7 @@ public abstract class AbstractMethodEnhancer<T extends TraceInfo> implements Abs
      * @param args
      * @param traceInfo
      */
-    protected void afterMethod(Object objectEnhanced, Method targetMethod, Object[] args, Object result, T traceInfo) {}
+    protected void afterMethod(Object objectEnhanced, Method targetMethod, Object[] args, Object result, T traceInfo) throws Exception {}
 
     /**
      * 增强异常处理
@@ -124,6 +124,6 @@ public abstract class AbstractMethodEnhancer<T extends TraceInfo> implements Abs
      * @param args
      * @param traceInfo
      */
-    protected void onException(Object objectEnhanced, Method targetMethod, Object[] args, Object result, Throwable t, T traceInfo) {}
+    protected void onException(Object objectEnhanced, Method targetMethod, Object[] args, Object result, Throwable t, T traceInfo) throws Exception {}
 
 }

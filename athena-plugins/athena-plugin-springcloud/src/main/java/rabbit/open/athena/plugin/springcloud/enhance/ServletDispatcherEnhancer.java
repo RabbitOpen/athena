@@ -14,12 +14,14 @@ public class ServletDispatcherEnhancer extends AbstractMethodEnhancer<SpringClou
 
     @Override
     public void beforeMethod(Object objectEnhanced, Method targetMethod, Object[] args) {
-        HttpServletRequest request = (HttpServletRequest) args[0];
-        String traceInfoStr = request.getHeader(TraceInfoHelper.ATHENA_TRACE_INFO);
-        if (null != traceInfoStr) {
-            TraceInfo parent = TraceInfoHelper.string2TraceInfo(traceInfoStr);
-            ContextManager.open(parent);
-        }
+        SafeRunner.handle(() -> {
+            HttpServletRequest request = (HttpServletRequest) args[0];
+            String traceInfoStr = request.getHeader(TraceInfoHelper.ATHENA_TRACE_INFO);
+            if (null != traceInfoStr) {
+                TraceInfo parent = TraceInfoHelper.string2TraceInfo(traceInfoStr);
+                ContextManager.open(parent);
+            }
+        });
     }
 
     @Override

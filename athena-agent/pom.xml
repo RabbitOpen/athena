@@ -39,6 +39,12 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -70,6 +76,9 @@
                                     <include>net.bytebuddy:byte-buddy:jar:</include>
                                     <include>net.bytebuddy:byte-buddy-agent:jar:</include>
                                     <include>org.yaml:snakeyaml:jar:</include>
+                                    <include>ch.qos.logback:logback-classic:jar:</include>
+                                    <include>ch.qos.logback:logback-core:jar:</include>
+                                    <include>org.slf4j:slf4j-api:jar:</include>
                                     <include>rabbit.open.athena:athena-client:jar:</include>
                                     <include>rabbit.open.athena:athena-plugin-common:jar:</include>
                                     <include>rabbit.open.athena:athena-plugin-thread:jar:</include>
@@ -85,6 +94,14 @@
                                 <relocation>
                                     <pattern>org.yaml.snakeyaml</pattern>
                                     <shadedPattern>athena.org.yaml.snakeyaml</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>ch.qos.logback</pattern>
+                                    <shadedPattern>athena.ch.qos.logback</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.slf4j</pattern>
+                                    <shadedPattern>athena.org.slf4j</shadedPattern>
                                 </relocation>
                             </relocations>
                             <createDependencyReducedPom>false</createDependencyReducedPom>

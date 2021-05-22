@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * 代理配置
@@ -59,14 +61,26 @@ public class AthenaMetaData {
      * @return
      */
     public static AthenaMetaData initByFile(String ymlFile) {
-        if (!ymlFile.startsWith("/")) {
-            ymlFile = "/" + ymlFile;
-        }
-        Yaml yaml = new Yaml();
-        InputStream stream = AthenaMetaData.class.getResourceAsStream(ymlFile);
+        return initByFile(ymlFile, fileName -> {
+            if (!fileName.startsWith("/")) {
+                fileName = "/" + fileName;
+            }
+            return AthenaMetaData.class.getResourceAsStream(fileName);
+        });
+    }
+
+    /**
+     * 加载文件
+     * @param ymlFile
+     * @param streamLoader
+     * @return
+     */
+    public static AthenaMetaData initByFile(String ymlFile, Function<String, InputStream> streamLoader) {
+        InputStream stream = streamLoader.apply(ymlFile);
         if (null == stream) {
             return new AthenaMetaData();
         }
+        Yaml yaml = new Yaml();
         Iterable<Object> all = yaml.loadAll(stream);
         if (!all.iterator().hasNext()) {
             close(stream);
@@ -91,6 +105,10 @@ public class AthenaMetaData {
      */
     public void completeEmptyFieldByFile(String ymlFile) {
         AthenaMetaData data = initByFile(ymlFile);
+        completeEmptyFieldByMetaData(data);
+    }
+
+    public void completeEmptyFieldByMetaData(AthenaMetaData data) {
         for (Field field : getClass().getDeclaredFields()) {
             field.setAccessible(true);
             try {
@@ -104,6 +122,7 @@ public class AthenaMetaData {
             }
         }
     }
+
 
     private static AthenaMetaData convert(Map<String, Object> config) {
         AthenaMetaData athenaMetaData = new AthenaMetaData();
